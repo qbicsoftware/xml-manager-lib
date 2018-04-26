@@ -7,10 +7,10 @@
   <version>1.0</version>
   <name>XML Property Parser Library</name>
   <url>http://maven.apache.org</url>
-    <life.qbic.xml.properties>
+    <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-    </life.qbic.xml.properties>
+    </properties>
 
   <dependencies>
     <dependency>
