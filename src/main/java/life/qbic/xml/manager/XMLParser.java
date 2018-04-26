@@ -75,6 +75,7 @@ public class XMLParser {
     return res;
   }
 
+//only gets experimental factor objects from the parsed xml object
   public List<Property> getExpFactors(JAXBElement<life.qbic.xml.properties.Qproperties> root) {
     List<Property> res = new ArrayList<Property>();
     if (root.getValue().getQfactors() != null) {
