@@ -1,10 +1,9 @@
 language: java
 jdk:
-  - oraclejdk8
-  - openjdk8
+- openjdk8
 cache:
   directories:
-    - "$HOME/.m2/repository"
+  - "$HOME/.m2/repository"
 sudo: false
 notifications:
   email:
@@ -15,11 +14,15 @@ notifications:
     on_failure: always
 branches:
   only:
-    - master
-    - testing
-    - development
-script: 
-  - mvn --settings .travis.settings.xml clean deploy
+  - master
+  - testing
+  - development
+script:
+- mvn --settings .travis.settings.xml clean cobertura:cobertura deploy
 after_success:
-  - mvn cobertura:cobertura && bash <(curl -s https://codecov.io/bash)
-  - mvn site
+- bash <(curl -s https://codecov.io/bash)
+- mvn site
+env:
+  global:
+  - secure: Egz2RuCE4uFkaDnznx+UDlThwimDrXzaMg3s809+kYVdtp0Z+wlwMcXtvOiDOl4idzCiHq/+KLzQ6Q/zYFQJZbH+PdaCPw+UTOEprz3QQ3aPlLrothX55oBKVKeslE4l5HvW5sxOtz+X1O2KaA7VGAxit90ih3d52PQiHxFh4aN6TgrJFnckuT0xOLvOIGki/2JBMcDnK5bs/cm6oDlq4/HiUObrP3uhVSytB3neSMvxJ0GhNAMX57+zzu+Hzuxu4meam7Tl7WX9Utps13L2VOeMBpN7x9BjVe635XNS/LLv37VVSl7RsWt/rirl2rKDb2QH6Yy4+lhaG/ic2i0ruYK1FTUpp+FjsV+3Ep3vnVlfcA1wjPEyOpyuACxtZWtISpzdTQYNw9T1R46iJnI9zc9YcGGqgaE3XoZkTA1aoSgF1uITWBHPy3+P8Lyi1vvir/Yh4FPoQlZih3EFhjJVUnKOssOdnOWsde3pgduHw/00KR8wcn0fYY+st5bGRt+qDx3FaEg5UEoU06zQ6RIHJzCZ1XDl3mKQTu0oDz1rJfN3+LuFtOAcrj4kUBWCCfIC9ssOm+tRVePmDqoWdHi4rTqAp1NdruamAxZqmzcf8dQW41Av+Tra+cU/elbJ8WMRQn3LChmt1hdVFvNtKYjN6JpM6ufzvWNLaJ0BOAEJjQE=
+  - secure: Gn52fA1oV4lVKvbu7hyl+2hi6+fE7yvZIQTm1kD0nwUJjmyiSovzVIR03FYsxZ5Cvybvij9AIfIjH/5HTjI0M2t+r43Rr30MUfGhHTWisftCEQDpJy1QsrAZ0patiPc24XnA2kBMRWTrr52vjj2+gnmUSPX3EoRGdpwMM/qu0jDPogYFfa6ofFpi5WnylrPqQWHSWCzIpD8+53f/m7v5QV2TPcFsBRX7JEfnqXgYaVdQy29esv7zojbjdv//zrj3YT1sEppnLGGwVzhJFOm9yG+FkHMRQEi/S7tqKuFkTvJBsg7A8P8a/ZlnWbF5h7FLrTu65UWR4vfekz8VgqkZtQUi8t24MWjzYjOgwaHpaS5nUEtoFnmPfIEgwi0bUg7reEvCMrX3gqhf+hC/bX4vi4/tKqzTFeZktXNbaUnwAB1Bx1pbCCEV5XZ1Qb8DMs8pcETVef5xlyBSflOWz2OAoZF90x+oao7Ox+Qjp/2Gq4ll+EcE2QZd/8VXNVfz1l70+/A6ss3QJ9vBVvAh+g0ZLlgr9XUsW2CqKVRa6pbPAWdJlvRD6ZYvCDo6rmJLar6GyuHWWG8/tzI3YpI4jCqNeld0E22OSHBf14Oci73A9UH45sjvfoN0xbEGq1JOVHqnLgK9GCNMrMkbwbOIcPie9tkAVj4vGJyBQbMUs62cuAg=
