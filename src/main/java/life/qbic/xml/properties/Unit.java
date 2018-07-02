@@ -113,5 +113,14 @@ public enum Unit {
   public String getValue() {
     return value;
   }
+  
+  public static Unit fromString(String value) {
+	    for (Unit b : Unit.values()) {
+	      if (b.value.equalsIgnoreCase(value)) {
+	        return b;
+	      }
+	    }
+	    throw new IllegalArgumentException("No constant with text " + value + " found");
+	  }
 
 }
