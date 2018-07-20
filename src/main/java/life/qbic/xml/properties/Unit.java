@@ -101,8 +101,8 @@ public enum Unit {
   Millimol_Per_Liter("mmol/l"),
   @XmlEnumValue("mol/l")
   Mol_Per_Liter("mol/l"),
-  @XmlEnumValue("arb.unit")
-  Arbitrary_Unit("arb.unit");
+  @XmlEnumValue("arb. unit")
+  Arbitrary_Unit("arb. unit");
   
   private String value;
 
