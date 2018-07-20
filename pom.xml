@@ -1,39 +1,21 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>life.qbic</groupId>
-  <artifactId>xml-manager-lib</artifactId>
-  <packaging>jar</packaging>
-  <version>1.0.0-SNAPSHOT</version>
-  <name>XML Property Parser Library</name>
-  <url>http://maven.apache.org</url>
-    <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-    </properties>
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-  <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
-      <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
-	<dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-api</artifactId>
-      <version>2.11.0</version>
-    </dependency>
-    <dependency>
-	  <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-core</artifactId>
-      <version>2.11.0</version>
-    </dependency>
+    <parent>
+        <groupId>life.qbic</groupId>
+        <artifactId>parent-pom</artifactId>
+        <version>1.0.0</version>
+    </parent>
 
-  </dependencies>
-  
-	   <repositories>
+    <groupId>life.qbic</groupId>
+    <artifactId>xml-manager-lib</artifactId>
+    <packaging>jar</packaging>
+    <version>1.0.0</version>
+    <name>XML Property Parser Library</name>
+    <url>http://maven.apache.org</url>
+    
+    <repositories>
         <repository>
             <id>nexus-snapshots</id>
             <name>QBiC Snapshots</name>
@@ -45,19 +27,6 @@
             <url>https://qbic-repo.am10.uni-tuebingen.de/repository/maven-releases</url>
         </repository>
     </repositories>
-    <distributionManagement>
-        <repository>
-            <uniqueVersion>true</uniqueVersion>
-            <id>nexus-releases</id>
-            <name>QBiC Releases</name>
-            <url>https://qbic-repo.am10.uni-tuebingen.de/repository/maven-releases</url>
-        </repository>
-        <snapshotRepository>
-            <uniqueVersion>false</uniqueVersion>
-            <id>nexus-snapshots</id>
-            <name>QBiC Snapshots</name>
-            <url>https://qbic-repo.am10.uni-tuebingen.de/repository/maven-snapshots</url>
-        </snapshotRepository>
-    </distributionManagement>
+    
 </project>
 
