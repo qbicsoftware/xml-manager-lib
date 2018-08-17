@@ -1,13 +1,17 @@
 package life.qbic.xml.manager;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
@@ -18,6 +22,7 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
+import org.xml.sax.SAXException;
 
 import life.qbic.xml.properties.Property;
 import life.qbic.xml.properties.PropertyType;
@@ -32,6 +37,17 @@ import life.qbic.xml.study.Qfactors;
 import life.qbic.xml.study.Qproperty;
 
 public class NewXMLParser {
+
+	final private XMLValidator validator = new XMLValidator();
+
+	public boolean validate(String xml) {
+		File xsd = new File(getClass().getResource("qproperties.xsd").getFile());
+		try {
+			return validator.validate(xml, xsd);
+		} catch (SAXException | IOException e) {
+			return false;
+		}
+	}
 
 	public JAXBElement<Qexperiment> createNewDesign(List<String> omicsTypes,
 			Map<String, Map<Pair<String, String>, List<String>>> expDesign, Map<String, List<Property>> otherProps)
@@ -67,7 +83,7 @@ public class NewXMLParser {
 					for (Pair<String, String> valunit : levels.keySet()) {
 						List<String> ids = levels.get(valunit);
 						life.qbic.xml.study.Qcatlevel catLvl = factory.createQcatlevel();
-						catLvl.setValue(valunit.getValue());
+						catLvl.setValue(valunit.getLeft());
 						catLvl.getEntityId().addAll(ids);
 						cat.getQcatlevel().add(catLvl);
 					}
@@ -79,7 +95,7 @@ public class NewXMLParser {
 					for (Pair<String, String> valunit : levels.keySet()) {
 						List<String> ids = levels.get(valunit);
 						life.qbic.xml.study.Qcontlevel contLvl = factory.createQcontlevel();
-						contLvl.setValue(valunit.getValue());
+						contLvl.setValue(valunit.getLeft());
 						contLvl.getEntityId().addAll(ids);
 						cont.getQcontlevel().add(contLvl);
 					}
@@ -119,39 +135,43 @@ public class NewXMLParser {
 		return sw.toString();
 	}
 
-	public List<String> getFactorLabels(JAXBElement<Qexperiment> expDesign) {
-		List<String> res = new ArrayList<String>();
+	public Set<String> getFactorLabels(JAXBElement<Qexperiment> expDesign) {
+		Set<String> res = new HashSet<String>();
 		Qfactors factors = expDesign.getValue().getQfactors();
-		for (Qcategorical cat : factors.getQcategorical())
-			res.add(cat.getLabel());
-		for (Qcontinuous cont : factors.getQcontinuous())
-			res.add(cont.getLabel());
+		if (factors != null) {
+			for (Qcategorical cat : factors.getQcategorical())
+				res.add(cat.getLabel());
+			for (Qcontinuous cont : factors.getQcontinuous())
+				res.add(cont.getLabel());
+		}
 		return res;
 	}
 
 	public Map<Pair<String, String>, Property> getFactorsForLabelsAndSamples(JAXBElement<Qexperiment> expDesign) {
 		Map<Pair<String, String>, Property> res = new HashMap<Pair<String, String>, Property>();
 		Qfactors factors = expDesign.getValue().getQfactors();
-		for (Qcategorical cat : factors.getQcategorical()) {
-			String lab = cat.getLabel();
-			for (Qcatlevel level : cat.getQcatlevel()) {
-				String val = level.getValue();
-				Property p = new Property(lab, val, PropertyType.Factor);
-				for (String sampleCode : level.getEntityId()) {
-					Pair<String, String> labelCode = new ImmutablePair<String, String>(lab, sampleCode);
-					res.put(labelCode, p);
+		if (factors != null) {
+			for (Qcategorical cat : factors.getQcategorical()) {
+				String lab = cat.getLabel();
+				for (Qcatlevel level : cat.getQcatlevel()) {
+					String val = level.getValue();
+					Property p = new Property(lab, val, PropertyType.Factor);
+					for (String sampleCode : level.getEntityId()) {
+						Pair<String, String> labelCode = new ImmutablePair<String, String>(lab, sampleCode);
+						res.put(labelCode, p);
+					}
 				}
 			}
-		}
-		for (Qcontinuous cont : factors.getQcontinuous()) {
-			String lab = cont.getLabel();
-			String unit = cont.getUnit();
-			for (Qcontlevel level : cont.getQcontlevel()) {
-				String val = level.getValue();
-				Property p = new Property(lab, val, Unit.fromString(unit), PropertyType.Factor);
-				for (String sampleCode : level.getEntityId()) {
-					Pair<String, String> labelCode = new ImmutablePair<String, String>(lab, sampleCode);
-					res.put(labelCode, p);
+			for (Qcontinuous cont : factors.getQcontinuous()) {
+				String lab = cont.getLabel();
+				String unit = cont.getUnit();
+				for (Qcontlevel level : cont.getQcontlevel()) {
+					String val = level.getValue();
+					Property p = new Property(lab, val, Unit.fromString(unit), PropertyType.Factor);
+					for (String sampleCode : level.getEntityId()) {
+						Pair<String, String> labelCode = new ImmutablePair<String, String>(lab, sampleCode);
+						res.put(labelCode, p);
+					}
 				}
 			}
 		}
