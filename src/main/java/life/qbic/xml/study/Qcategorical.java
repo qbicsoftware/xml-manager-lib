@@ -5,7 +5,6 @@
 // Generated on: 2018.08.03 at 02:15:07 PM CEST 
 //
 
-
 package life.qbic.xml.study;
 
 import java.util.ArrayList;
@@ -16,11 +15,13 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for anonymous complex type.
+ * <p>
+ * Java class for anonymous complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType>
@@ -49,67 +50,94 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
-    "qcatlevel"
-})
+@XmlType(name = "", propOrder = { "qcatlevel" })
 public class Qcategorical {
 
-    @XmlElement(required = true)
-    protected List<Qcatlevel> qcatlevel;
-    @XmlAttribute(name = "label")
-    protected String label;
+	@XmlElement(required = true)
+	protected List<Qcatlevel> qcatlevel;
+	@XmlAttribute(name = "label")
+	protected String label;
 
-    /**
-     * Gets the value of the qcatlevel property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the qcatlevel property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getQcatlevel().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link Qcatlevel }
-     * 
-     * 
-     */
-    public List<Qcatlevel> getQcatlevel() {
-        if (qcatlevel == null) {
-            qcatlevel = new ArrayList<Qcatlevel>();
-        }
-        return this.qcatlevel;
-    }
+	/**
+	 * Gets the value of the qcatlevel property.
+	 * 
+	 * <p>
+	 * This accessor method returns a reference to the live list, not a
+	 * snapshot. Therefore any modification you make to the returned list will
+	 * be present inside the JAXB object. This is why there is not a
+	 * <CODE>set</CODE> method for the qcatlevel property.
+	 * 
+	 * <p>
+	 * For example, to add a new item, do as follows:
+	 * 
+	 * <pre>
+	 * getQcatlevel().add(newItem);
+	 * </pre>
+	 * 
+	 * 
+	 * <p>
+	 * Objects of the following type(s) are allowed in the list {@link Qcatlevel
+	 * }
+	 * 
+	 * 
+	 */
+	public List<Qcatlevel> getQcatlevel() {
+		if (qcatlevel == null) {
+			qcatlevel = new ArrayList<Qcatlevel>();
+		}
+		return this.qcatlevel;
+	}
 
-    /**
-     * Gets the value of the label property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getLabel() {
-        return label;
-    }
+	/**
+	 * Gets the value of the label property.
+	 * 
+	 * @return possible object is {@link String }
+	 * 
+	 */
+	public String getLabel() {
+		return label;
+	}
 
-    /**
-     * Sets the value of the label property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setLabel(String value) {
-        this.label = value;
-    }
+	/**
+	 * Sets the value of the label property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link String }
+	 * 
+	 */
+	public void setLabel(String value) {
+		this.label = value;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((label == null) ? 0 : label.hashCode());
+		result = prime * result + ((qcatlevel == null) ? 0 : qcatlevel.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Qcategorical other = (Qcategorical) obj;
+		if (label == null) {
+			if (other.label != null)
+				return false;
+		} else if (!label.equals(other.label))
+			return false;
+		if (qcatlevel == null) {
+			if (other.qcatlevel != null)
+				return false;
+		} else if (!qcatlevel.equals(other.qcatlevel))
+			return false;
+		return true;
+	}
 
 }

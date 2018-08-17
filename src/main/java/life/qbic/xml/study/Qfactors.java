@@ -5,7 +5,6 @@
 // Generated on: 2018.08.03 at 02:15:07 PM CEST 
 //
 
-
 package life.qbic.xml.study;
 
 import java.util.ArrayList;
@@ -15,11 +14,13 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for anonymous complex type.
+ * <p>
+ * Java class for anonymous complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType>
@@ -82,73 +83,103 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
-    "qcategorical",
-    "qcontinuous"
-})
+@XmlType(name = "", propOrder = { "qcategorical", "qcontinuous" })
 public class Qfactors {
 
-    @XmlElement(required = true)
-    protected List<Qcategorical> qcategorical;
-    @XmlElement(required = true)
-    protected List<Qcontinuous> qcontinuous;
+	@XmlElement(required = true)
+	protected List<Qcategorical> qcategorical;
+	@XmlElement(required = true)
+	protected List<Qcontinuous> qcontinuous;
 
-    /**
-     * Gets the value of the qcategorical property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the qcategorical property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getQcategorical().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link Qcategorical }
-     * 
-     * 
-     */
-    public List<Qcategorical> getQcategorical() {
-        if (qcategorical == null) {
-            qcategorical = new ArrayList<Qcategorical>();
-        }
-        return this.qcategorical;
-    }
+	/**
+	 * Gets the value of the qcategorical property.
+	 * 
+	 * <p>
+	 * This accessor method returns a reference to the live list, not a
+	 * snapshot. Therefore any modification you make to the returned list will
+	 * be present inside the JAXB object. This is why there is not a
+	 * <CODE>set</CODE> method for the qcategorical property.
+	 * 
+	 * <p>
+	 * For example, to add a new item, do as follows:
+	 * 
+	 * <pre>
+	 * getQcategorical().add(newItem);
+	 * </pre>
+	 * 
+	 * 
+	 * <p>
+	 * Objects of the following type(s) are allowed in the list
+	 * {@link Qcategorical }
+	 * 
+	 * 
+	 */
+	public List<Qcategorical> getQcategorical() {
+		if (qcategorical == null) {
+			qcategorical = new ArrayList<Qcategorical>();
+		}
+		return this.qcategorical;
+	}
 
-    /**
-     * Gets the value of the qcontinuous property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the qcontinuous property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getQcontinuous().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link Qcontinuous }
-     * 
-     * 
-     */
-    public List<Qcontinuous> getQcontinuous() {
-        if (qcontinuous == null) {
-            qcontinuous = new ArrayList<Qcontinuous>();
-        }
-        return this.qcontinuous;
-    }
+	/**
+	 * Gets the value of the qcontinuous property.
+	 * 
+	 * <p>
+	 * This accessor method returns a reference to the live list, not a
+	 * snapshot. Therefore any modification you make to the returned list will
+	 * be present inside the JAXB object. This is why there is not a
+	 * <CODE>set</CODE> method for the qcontinuous property.
+	 * 
+	 * <p>
+	 * For example, to add a new item, do as follows:
+	 * 
+	 * <pre>
+	 * getQcontinuous().add(newItem);
+	 * </pre>
+	 * 
+	 * 
+	 * <p>
+	 * Objects of the following type(s) are allowed in the list
+	 * {@link Qcontinuous }
+	 * 
+	 * 
+	 */
+	public List<Qcontinuous> getQcontinuous() {
+		if (qcontinuous == null) {
+			qcontinuous = new ArrayList<Qcontinuous>();
+		}
+		return this.qcontinuous;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((qcategorical == null) ? 0 : qcategorical.hashCode());
+		result = prime * result + ((qcontinuous == null) ? 0 : qcontinuous.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Qfactors other = (Qfactors) obj;
+		if (qcategorical == null) {
+			if (other.qcategorical != null)
+				return false;
+		} else if (!qcategorical.equals(other.qcategorical))
+			return false;
+		if (qcontinuous == null) {
+			if (other.qcontinuous != null)
+				return false;
+		} else if (!qcontinuous.equals(other.qcontinuous))
+			return false;
+		return true;
+	}
 
 }
