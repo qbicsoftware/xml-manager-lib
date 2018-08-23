@@ -25,6 +25,7 @@ import life.qbic.xml.properties.PropertyType;
 import life.qbic.xml.properties.Unit;
 import life.qbic.xml.study.Qexperiment;
 import life.qbic.xml.study.Qproperty;
+import life.qbic.xml.study.TechnologyType;
 
 public class NewXMLParserTest {
 
@@ -39,7 +40,7 @@ public class NewXMLParserTest {
 	private JAXBElement<Qexperiment> noFactors;
 
 	private Map<String, Map<Pair<String, String>, List<String>>> expDesign;
-	private ArrayList<String> omicsTypes;
+	private Map<String, List<String>> techTypes;
 	private Map<String, List<Property>> otherProps;
 
 	@Before
@@ -47,7 +48,13 @@ public class NewXMLParserTest {
 		parser = new NewXMLParser();
 		empty = parser.getEmptyXML();
 
-		omicsTypes = new ArrayList<String>(Arrays.asList("type1", "type2", "type3"));
+		techTypes = new HashMap<String,List<String>>();
+		List<String> t1 = new ArrayList<String>(Arrays.asList("1", "2", "3"));
+		List<String> t2 = new ArrayList<String>(Arrays.asList("1", "4", "5"));
+		List<String> t3 = new ArrayList<String>(Arrays.asList("4", "5", "6"));
+		techTypes.put("type 1", t1);
+		techTypes.put("type 2", t2);
+		techTypes.put("type 3", t3);
 
 		expDesign = new HashMap<String, Map<Pair<String, String>, List<String>>>();
 		Map<Pair<String, String>, List<String>> levelsFactor1 = new HashMap<Pair<String, String>, List<String>>();
@@ -78,20 +85,22 @@ public class NewXMLParserTest {
 		props2.add(new Property("class", "unknown", PropertyType.Property));
 		otherProps.put("ship1", props1);
 		otherProps.put("ship2", props2);
+		
+		List<TechnologyType> techs = parser.mapToTechnologyTypes(techTypes);
 
-		fullDesign = parser.createNewDesign(omicsTypes, expDesign, otherProps);
-		noProps = parser.createNewDesign(omicsTypes, expDesign, new HashMap<String, List<Property>>());
-		noTypes = parser.createNewDesign(new ArrayList<String>(), expDesign, otherProps);
-		noPropsNoFactors = parser.createNewDesign(omicsTypes,
+		fullDesign = parser.createNewDesign(techs, expDesign, otherProps);
+		noProps = parser.createNewDesign(techs, expDesign, new HashMap<String, List<Property>>());
+		noTypes = parser.createNewDesign(new ArrayList<TechnologyType>(), expDesign, otherProps);
+		noPropsNoFactors = parser.createNewDesign(techs,
 				new HashMap<String, Map<Pair<String, String>, List<String>>>(), new HashMap<String, List<Property>>());
-		noFactors = parser.createNewDesign(omicsTypes, new HashMap<String, Map<Pair<String, String>, List<String>>>(),
+		noFactors = parser.createNewDesign(techs, new HashMap<String, Map<Pair<String, String>, List<String>>>(),
 				otherProps);
 	}
 
 	@Test
 	public void testGetEmptyXML() {
 		Qexperiment empty = this.empty.getValue();
-		assertTrue(empty.getOmicsType().isEmpty());
+		assertTrue(empty.getTechnologyType().isEmpty());
 		assertEquals(empty.getQfactors(), null);
 		assertTrue(empty.getQproperty().isEmpty());
 	}
@@ -101,7 +110,7 @@ public class NewXMLParserTest {
 		Qexperiment fullDesign = this.fullDesign.getValue();
 		assertTrue(fullDesign.getQfactors() != null);
 		assertFalse(fullDesign.getQproperty().isEmpty());
-		assertEquals(fullDesign.getOmicsType(), omicsTypes);
+		assertEquals(fullDesign.getTechnologyType().size(), 3);
 		assertEquals(fullDesign.getQfactors().getQcategorical().get(0).getLabel(), "phenotype");
 		assertEquals(fullDesign.getQfactors().getQcategorical().get(0).getQcatlevel().size(), 2);
 		assertEquals(fullDesign.getQfactors().getQcontinuous().get(0).getLabel(), "weight");
@@ -113,7 +122,7 @@ public class NewXMLParserTest {
 		assertEquals(fullDesign.getQproperty().size(), propCount);
 
 		Qexperiment noProps = this.noProps.getValue();
-		assertEquals(noProps.getOmicsType(), omicsTypes);
+		assertEquals(noProps.getTechnologyType().size(), 3);
 		assertTrue(noProps.getQproperty().isEmpty());
 		assertEquals(noProps.getQfactors().getQcategorical().get(0).getLabel(), "phenotype");
 		assertEquals(noProps.getQfactors().getQcategorical().get(0).getQcatlevel().size(), 2);
@@ -121,7 +130,7 @@ public class NewXMLParserTest {
 		assertEquals(noProps.getQfactors().getQcontinuous().get(0).getQcontlevel().size(), 3);
 
 		Qexperiment noTypes = this.noTypes.getValue();
-		assertTrue(noTypes.getOmicsType().isEmpty());
+		assertTrue(noTypes.getTechnologyType().isEmpty());
 		propCount = 0;
 		for (List<Property> props : otherProps.values()) {
 			propCount += props.size();
@@ -133,7 +142,7 @@ public class NewXMLParserTest {
 		assertEquals(noTypes.getQfactors().getQcontinuous().get(0).getQcontlevel().size(), 3);
 
 		Qexperiment noPropsNoFactors = this.noPropsNoFactors.getValue();
-		assertEquals(noPropsNoFactors.getOmicsType(), omicsTypes);
+		assertEquals(noPropsNoFactors.getTechnologyType().size(), 3);
 		assertTrue(noPropsNoFactors.getQproperty().isEmpty());
 		assertTrue(noPropsNoFactors.getQfactors().getQcategorical().isEmpty());
 		assertTrue(noPropsNoFactors.getQfactors().getQcontinuous().isEmpty());
@@ -144,7 +153,7 @@ public class NewXMLParserTest {
 			propCount += props.size();
 		}
 		assertEquals(noFactors.getQproperty().size(), propCount);
-		assertEquals(noFactors.getOmicsType(), omicsTypes);
+		assertEquals(noFactors.getTechnologyType().size(), 3);
 		assertTrue(noFactors.getQfactors().getQcategorical().isEmpty());
 		assertTrue(noFactors.getQfactors().getQcontinuous().isEmpty());
 	}
@@ -152,7 +161,9 @@ public class NewXMLParserTest {
 	@Test
 	public void testParseXMLString() throws JAXBException {
 		String xml1 = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" + "<qexperiment>"
-				+ "	<omics_type>RNA-SEQ</omics_type>" + "	<omics_type>Microarray Expression Analysis</omics_type>"
+				+ "	<technology_type name=\"RNA-SEQ\">"
+				+ "<entity_id>QABCD004AF</entity_id>"
+				+ "</technology_type>" + "	<technology_type name = \"Microarray Expression Analysis\"><entity_id>QABCD004AF</entity_id></technology_type>"
 				+ "    <qfactors>" + "        <qcategorical label=\"phenotype\">"
 				+ "        	<qcatlevel value=\"pupper\">" + "    			<entity_id>QABCD003AB</entity_id>"
 				+ "    			<entity_id>QABCD004AF</entity_id>" + "    		</qcatlevel>"
@@ -178,7 +189,7 @@ public class NewXMLParserTest {
 		assertTrue(parser.validate(xml1));
 		JAXBElement<Qexperiment> firstParse1 = parser.parseXMLString(xml1);
 		JAXBElement<Qexperiment> secondParse1 = parser.parseXMLString(parser.toString(firstParse1));
-		assertEquals(secondParse1.getValue().getOmicsType(), firstParse1.getValue().getOmicsType());
+		assertEquals(secondParse1.getValue().getTechnologyType(), firstParse1.getValue().getTechnologyType());
 		List<Qproperty> q2 = secondParse1.getValue().getQproperty();
 		List<Qproperty> q1 = firstParse1.getValue().getQproperty();
 		for (int i = 0; i < q1.size(); i++) {
@@ -187,7 +198,7 @@ public class NewXMLParserTest {
 		assertEquals(secondParse1.getValue().getQfactors(), firstParse1.getValue().getQfactors());
 
 		String xml2 = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" + "<qexperiment>"
-				+ "	<omics_type>RNA-SEQ</omics_type>" + "<qfactors/>"
+				+ "	<technology_type name = \"RNA-SEQ\"></technology_type>" + "<qfactors/>"
 				+ "    <qproperty entity_id=\"QABCD008AB\" label=\"tail_length\" value=\"0.3\" unit=\"m\"></qproperty>"
 				+ "    <qproperty entity_id=\"QABCD008AB\" label=\"name\" value=\"Krishna\"></qproperty>"
 				+ "</qexperiment>";
@@ -262,7 +273,6 @@ public class NewXMLParserTest {
 		assertEquals(otherProps, parser.getPropertiesForSampleCode(noTypes));
 		assertTrue(parser.getPropertiesForSampleCode(empty).isEmpty());
 		assertTrue(parser.getPropertiesForSampleCode(noProps).isEmpty());
-
 	}
 
 }
