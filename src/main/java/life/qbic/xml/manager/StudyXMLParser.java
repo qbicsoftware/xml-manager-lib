@@ -39,10 +39,11 @@ import life.qbic.xml.study.Qfactors;
 import life.qbic.xml.study.Qproperty;
 import life.qbic.xml.study.TechnologyType;
 
-public class NewXMLParser {
+public class StudyXMLParser {
 
-	private final Logger logger = LogManager.getLogger(NewXMLParser.class);
+	private final Logger logger = LogManager.getLogger(StudyXMLParser.class);
 	final private XMLValidator validator = new XMLValidator();
+	final public static ObjectFactory factory = new ObjectFactory();
 
 	public boolean validate(String xml) {
 		File xsd = new File(getClass().getResource("qproperties.xsd").getFile());
@@ -53,8 +54,7 @@ public class NewXMLParser {
 		}
 	}
 
-	public List<TechnologyType> mapToTechnologyTypes(Map<String, List<String>> techTypes) {
-		ObjectFactory factory = new ObjectFactory();
+	public List<TechnologyType> mapToTechnologyTypes(Map<String, Set<String>> techTypes) {
 		List<TechnologyType> res = new ArrayList<TechnologyType>();
 		for (String technology : techTypes.keySet()) {
 			TechnologyType tt = factory.createTechnologyType();
@@ -68,68 +68,11 @@ public class NewXMLParser {
 	}
 
 	public JAXBElement<Qexperiment> createNewDesign(List<TechnologyType> techTypes,
-			Map<String, Map<Pair<String, String>, List<String>>> expDesign, Map<String, List<Property>> otherProps)
+			Map<String, Map<Pair<String, String>, List<String>>> expDesign, Map<String, List<Qproperty>> otherProps)
 			throws JAXBException {
-		ObjectFactory factory = new ObjectFactory();
 		JAXBElement<Qexperiment> res = getEmptyXML();
-		Qexperiment root = res.getValue();
+		mergeDesigns(res, techTypes, expDesign, otherProps);
 
-		root.getTechnologyType().addAll(techTypes);
-		//		List<TechnologyType> techs = root.getTechnologyType();
-		//		for (String tech : newTechTypes.keySet()) {
-		//			TechnologyType tt = factory.createTechnologyType();
-		//			tt.setName(tech);
-		//			tt.getEntityId().addAll(newTechTypes.get(tech));
-		//			techs.add(tt);
-		//		}
-
-		life.qbic.xml.study.Qfactors factors = new Qfactors();
-		root.setQfactors(factors);
-		List<life.qbic.xml.study.Qcategorical> cats = factors.getQcategorical();
-		List<Qcontinuous> conts = factors.getQcontinuous();
-		List<life.qbic.xml.study.Qproperty> props = root.getQproperty();
-		for (String id : otherProps.keySet()) {
-			for (Property p : otherProps.get(id)) {
-				life.qbic.xml.study.Qproperty qp = factory.createQproperty();
-				qp.setEntityId(id);
-				qp.setLabel(p.getLabel());
-				qp.setValue(p.getValue());
-				if (p.hasUnit())
-					qp.setUnit(p.getUnit().getValue());
-				props.add(qp);
-			}
-		}
-		for (String label : expDesign.keySet()) {
-			Map<Pair<String, String>, List<String>> levels = expDesign.get(label);
-			Iterator<Pair<String, String>> it = levels.keySet().iterator();
-			if (it.hasNext()) {
-				String firstUnit = it.next().getRight();
-				if (firstUnit == null || firstUnit.isEmpty()) {
-					life.qbic.xml.study.Qcategorical cat = factory.createQcategorical();
-					cat.setLabel(label);
-					for (Pair<String, String> valunit : levels.keySet()) {
-						List<String> ids = levels.get(valunit);
-						life.qbic.xml.study.Qcatlevel catLvl = factory.createQcatlevel();
-						catLvl.setValue(valunit.getLeft());
-						catLvl.getEntityId().addAll(ids);
-						cat.getQcatlevel().add(catLvl);
-					}
-					cats.add(cat);
-				} else {
-					life.qbic.xml.study.Qcontinuous cont = factory.createQcontinuous();
-					cont.setLabel(label);
-					cont.setUnit(firstUnit);
-					for (Pair<String, String> valunit : levels.keySet()) {
-						List<String> ids = levels.get(valunit);
-						life.qbic.xml.study.Qcontlevel contLvl = factory.createQcontlevel();
-						contLvl.setValue(valunit.getLeft());
-						contLvl.getEntityId().addAll(ids);
-						cont.getQcontlevel().add(contLvl);
-					}
-					conts.add(cont);
-				}
-			}
-		}
 		return res;
 	}
 
@@ -166,10 +109,14 @@ public class NewXMLParser {
 		Set<String> res = new HashSet<String>();
 		Qfactors factors = expDesign.getValue().getQfactors();
 		if (factors != null) {
-			for (Qcategorical cat : factors.getQcategorical())
+			for (Qcategorical f : factors.getQcategorical()) {
+				Qcategorical cat = (Qcategorical) f;
 				res.add(cat.getLabel());
-			for (Qcontinuous cont : factors.getQcontinuous())
+			}
+			for (Qcontinuous f : factors.getQcontinuous()) {
+				Qcontinuous cont = (Qcontinuous) f;
 				res.add(cont.getLabel());
+			}
 		}
 		return res;
 	}
@@ -178,7 +125,8 @@ public class NewXMLParser {
 		Map<Pair<String, String>, Property> res = new HashMap<Pair<String, String>, Property>();
 		Qfactors factors = expDesign.getValue().getQfactors();
 		if (factors != null) {
-			for (Qcategorical cat : factors.getQcategorical()) {
+			for (Qcategorical f : factors.getQcategorical()) {
+				Qcategorical cat = (Qcategorical) f;
 				String lab = cat.getLabel();
 				for (Qcatlevel level : cat.getQcatlevel()) {
 					String val = level.getValue();
@@ -189,7 +137,8 @@ public class NewXMLParser {
 					}
 				}
 			}
-			for (Qcontinuous cont : factors.getQcontinuous()) {
+			for (Qcontinuous f : factors.getQcontinuous()) {
+				Qcontinuous cont = (Qcontinuous) f;
 				String lab = cont.getLabel();
 				String unit = cont.getUnit();
 				for (Qcontlevel level : cont.getQcontlevel()) {
@@ -216,14 +165,27 @@ public class NewXMLParser {
 					newT.getEntityId().add(code);
 				}
 			}
-			newTechTypes.add(newT);
+			if (!newT.getEntityId().isEmpty()) {
+				newT.setName(t.getName());
+				newTechTypes.add(newT);
+			}
 		}
 
 		Map<String, List<Property>> props = getPropertiesForSampleCode(expDesign);
-		Map<String, List<Property>> newProps = new HashMap<String, List<Property>>();
+		Map<String, List<Qproperty>> newProps = new HashMap<String, List<Qproperty>>();
 		for (String id : props.keySet()) {
 			if (existingIDs.contains(id)) {
-				newProps.put(id, props.get(id));
+				List<Qproperty> propsForThisID = new ArrayList<Qproperty>();
+				for (Property p : props.get(id)) {
+					Qproperty newProp = factory.createQproperty();
+					newProp.setLabel(p.getLabel());
+					newProp.setValue(p.getValue());
+					if (p.hasUnit())
+						newProp.setUnit(p.getUnit().getValue());
+					newProp.setEntityId(id);
+					propsForThisID.add(newProp);
+				}
+				newProps.put(id, propsForThisID);
 			} else {
 				logger.info("removing property for sample " + id
 						+ " from the design, since sample with this id does not exist anymore.");
@@ -240,7 +202,7 @@ public class NewXMLParser {
 			if (existingIDs.contains(id)) {
 				String unit = null;
 				if (prop.hasUnit()) {
-					unit = prop.getUnit().toString();
+					unit = prop.getUnit().getValue();
 				}
 				Pair<String, String> newProp = new ImmutablePair<String, String>(prop.getValue(), unit);
 				Map<Pair<String, String>, List<String>> level = new HashMap<Pair<String, String>, List<String>>();
@@ -261,71 +223,98 @@ public class NewXMLParser {
 		return createNewDesign(newTechTypes, newFactors, newProps);
 	}
 
-	public JAXBElement<Qexperiment> mergeDesigns(JAXBElement<Qexperiment> existing, List<TechnologyType> techTypes,
-			Map<String, Map<Pair<String, String>, List<String>>> expDesign, Map<String, List<Property>> otherProps) {
-		ObjectFactory factory = new ObjectFactory();
-		Qexperiment root = existing.getValue();
-
-//		root.getTechnologyType().addAll(techTypes);
-				List<TechnologyType> techs = root.getTechnologyType();
-				for (String tech : newTechTypes.keySet()) {
-					TechnologyType tt = factory.createTechnologyType();
-					tt.setName(tech);
-					tt.getEntityId().addAll(newTechTypes.get(tech));
-					techs.add(tt);
-				}
-
-		life.qbic.xml.study.Qfactors factors = new Qfactors();
-		root.setQfactors(factors);
-		List<life.qbic.xml.study.Qcategorical> cats = factors.getQcategorical();
-		List<Qcontinuous> conts = factors.getQcontinuous();
-		List<life.qbic.xml.study.Qproperty> props = root.getQproperty();
-		for (String id : otherProps.keySet()) {
-			for (Property p : otherProps.get(id)) {
-				life.qbic.xml.study.Qproperty qp = factory.createQproperty();
-				qp.setEntityId(id);
-				qp.setLabel(p.getLabel());
-				qp.setValue(p.getValue());
-				if (p.hasUnit())
-					qp.setUnit(p.getUnit().getValue());
-				props.add(qp);
+	private JAXBElement<Qexperiment> addTechTypesToDesign(JAXBElement<Qexperiment> experiment,
+			List<TechnologyType> techTypes) {
+		Qexperiment root = experiment.getValue();
+		Map<String, Set<String>> idsForType = new HashMap<String, Set<String>>();
+		for (TechnologyType t : root.getTechnologyType()) {
+			idsForType.put(t.getName(), t.getEntityId());
+		}
+		List<TechnologyType> existing = root.getTechnologyType();
+		for (TechnologyType t : techTypes) {
+			if (idsForType.containsKey(t.getName())) {
+				idsForType.get(t.getName()).addAll(t.getEntityId());
+			} else {
+				existing.add(t);
 			}
 		}
-		for (String label : expDesign.keySet()) {
-			Map<Pair<String, String>, List<String>> levels = expDesign.get(label);
-			Iterator<Pair<String, String>> it = levels.keySet().iterator();
-			if (it.hasNext()) {
-				String firstUnit = it.next().getRight();
-				if (firstUnit == null || firstUnit.isEmpty()) {
-					life.qbic.xml.study.Qcategorical cat = factory.createQcategorical();
-					cat.setLabel(label);
-					for (Pair<String, String> valunit : levels.keySet()) {
-						List<String> ids = levels.get(valunit);
-						life.qbic.xml.study.Qcatlevel catLvl = factory.createQcatlevel();
-						catLvl.setValue(valunit.getLeft());
-						catLvl.getEntityId().addAll(ids);
-						cat.getQcatlevel().add(catLvl);
-					}
-					cats.add(cat);
+		return experiment;
+	}
+
+	private JAXBElement<Qexperiment> addPropertiesToDesign(JAXBElement<Qexperiment> existing,
+			Map<String, List<Qproperty>> newProps) {
+		Map<Pair<String, String>, Qproperty> labelAndID = new HashMap<Pair<String, String>, Qproperty>();
+		List<Qproperty> existingProps = existing.getValue().getQproperty();
+		for (Qproperty prop : existingProps) {
+			labelAndID.put(new ImmutablePair<String, String>(prop.getLabel(), prop.getEntityId()), prop);
+		}
+		for (String id : newProps.keySet()) {
+			for (Qproperty p : newProps.get(id)) {
+				Pair<String, String> labelID = new ImmutablePair<String, String>(p.getLabel(), id);
+				if (!labelAndID.containsKey(labelID)) {
+					existingProps.add(p);
 				} else {
-					life.qbic.xml.study.Qcontinuous cont = factory.createQcontinuous();
-					cont.setLabel(label);
-					cont.setUnit(firstUnit);
-					for (Pair<String, String> valunit : levels.keySet()) {
-						List<String> ids = levels.get(valunit);
-						life.qbic.xml.study.Qcontlevel contLvl = factory.createQcontlevel();
-						contLvl.setValue(valunit.getLeft());
-						contLvl.getEntityId().addAll(ids);
-						cont.getQcontlevel().add(contLvl);
-					}
-					conts.add(cont);
+					Qproperty old = labelAndID.get(labelID);
+					old.setValue(p.getValue());
+					old.setUnit(p.getUnit());
 				}
 			}
 		}
 		return existing;
 	}
 
-	private List<TechnologyType> getSamplesForTechTypes(JAXBElement<Qexperiment> expDesign) {
+	private JAXBElement<Qexperiment> addFactorsToDesign(JAXBElement<Qexperiment> existing,
+			Map<String, Map<Pair<String, String>, List<String>>> newDesign) {
+		Qfactors factors = existing.getValue().getQfactors();
+		if (factors == null) {
+			existing.getValue().setQfactors(factory.createQfactors());
+			factors = existing.getValue().getQfactors();
+		}
+		for (String label : newDesign.keySet()) {
+			Map<Pair<String, String>, List<String>> levels = newDesign.get(label);
+			Iterator<Pair<String, String>> it = levels.keySet().iterator();
+			if (it.hasNext()) {
+				String unit = it.next().getRight();
+				// no unit: categorical factor
+				if (unit == null || unit.isEmpty()) {
+					Qcategorical oldCat = factors.getCatFactorOrNull(label);
+					// no factor, add everything
+					if (oldCat == null) {
+						factors.createNewFactor(label, levels);
+					}
+					// factor exists, add missing information
+					else {
+						oldCat.update(levels);
+					}
+				}
+				// unit: continuous factor
+				else {
+					Qcontinuous oldCont = factors.getContFactorOrNull(label);
+					// no factor, add everything
+					if (oldCont == null) {
+						factors.createNewFactor(label, unit, levels);
+					}
+					// factor exists, add missing information
+					else {
+						oldCont.update(levels);
+					}
+				}
+			}
+		}
+		return existing;
+	}
+
+	public JAXBElement<Qexperiment> mergeDesigns(JAXBElement<Qexperiment> existing, List<TechnologyType> techTypes,
+			Map<String, Map<Pair<String, String>, List<String>>> expDesign, Map<String, List<Qproperty>> otherProps) {
+
+		addTechTypesToDesign(existing, techTypes);
+		addPropertiesToDesign(existing, otherProps);
+		addFactorsToDesign(existing, expDesign);
+
+		return existing;
+	}
+
+	public List<TechnologyType> getSamplesForTechTypes(JAXBElement<Qexperiment> expDesign) {
 		List<TechnologyType> types = expDesign.getValue().getTechnologyType();
 		return types;
 	}
