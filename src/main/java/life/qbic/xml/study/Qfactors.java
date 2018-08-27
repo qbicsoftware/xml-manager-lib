@@ -9,10 +9,16 @@ package life.qbic.xml.study;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+
+import org.apache.commons.lang3.tuple.Pair;
+
+import life.qbic.xml.manager.StudyXMLParser;
 
 /**
  * <p>
@@ -151,6 +157,26 @@ public class Qfactors {
 		return this.qcontinuous;
 	}
 
+	public Qcategorical getCatFactorOrNull(String label) {
+			for (Qcategorical factor : getQcategorical()) {
+				Qcategorical cat = (Qcategorical) factor;
+				if (cat.getLabel().equals(label)) {
+					return cat;
+				}
+			}
+		return null;
+	}
+	
+	public Qcontinuous getContFactorOrNull(String label) {
+		for (Qcontinuous factor : getQcontinuous()) {
+			Qcontinuous cont = (Qcontinuous) factor;
+			if (cont.getLabel().equals(label)) {
+				return cont;
+			}
+		}
+		return null;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -182,4 +208,18 @@ public class Qfactors {
 		return true;
 	}
 
+	public void createNewFactor(String label, Map<Pair<String, String>, List<String>> levels) {
+		Qcategorical cat = StudyXMLParser.factory.createQcategorical();
+		cat.setLabel(label);
+		cat.createLevels(levels);
+		getQcategorical().add(cat);
+	}
+
+	public void createNewFactor(String label, String unit, Map<Pair<String, String>, List<String>> levels) {
+		Qcontinuous cont = StudyXMLParser.factory.createQcontinuous();
+		cont.setLabel(label);
+		cont.setUnit(unit);
+		cont.createLevels(levels);
+		getQcontinuous().add(cont);
+	}
 }

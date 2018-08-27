@@ -8,8 +8,9 @@
 
 package life.qbic.xml.study;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -44,7 +45,7 @@ import javax.xml.bind.annotation.XmlType;
 public class Qcatlevel {
 
     @XmlElement(name = "entity_id", required = true)
-    protected List<String> entityId;
+    protected Set<String> entityId;
     @XmlAttribute(name = "value", required = true)
     protected String value;
 
@@ -70,9 +71,9 @@ public class Qcatlevel {
      * 
      * 
      */
-    public List<String> getEntityId() {
+    public Set<String> getEntityId() {
         if (entityId == null) {
-            entityId = new ArrayList<String>();
+            entityId = new HashSet<String>();
         }
         return this.entityId;
     }

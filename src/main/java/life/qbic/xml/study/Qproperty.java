@@ -5,7 +5,6 @@
 // Generated on: 2018.08.03 at 02:15:07 PM CEST 
 //
 
-
 package life.qbic.xml.study;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -13,11 +12,15 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
+import life.qbic.xml.properties.Unit;
 
 /**
- * <p>Java class for anonymous complex type.
+ * <p>
+ * Java class for anonymous complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType>
@@ -38,102 +41,107 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "")
 public class Qproperty {
 
-    @XmlAttribute(name = "entity_id", required = true)
-    protected String entityId;
-    @XmlAttribute(name = "label", required = true)
-    protected String label;
-    @XmlAttribute(name = "value", required = true)
-    protected String value;
-    @XmlAttribute(name = "unit")
-    protected String unit;
+	@XmlAttribute(name = "entity_id", required = true)
+	protected String entityId;
+	@XmlAttribute(name = "label", required = true)
+	protected String label;
+	@XmlAttribute(name = "value", required = true)
+	protected String value;
+	@XmlAttribute(name = "unit")
+	protected String unit;
 
-    /**
-     * Gets the value of the entityId property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getEntityId() {
-        return entityId;
-    }
+	public Qproperty(String entityID, String label, String value) {
+		setLabel(label);
+		setValue(value);
+		setEntityId(entityID);
+	}
 
-    /**
-     * Sets the value of the entityId property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setEntityId(String value) {
-        this.entityId = value;
-    }
+	public Qproperty(String entityID, String label, String value, Unit unit) {
+		this(entityID, label, value);
+		setUnit(unit.getValue());
+	}
 
-    /**
-     * Gets the value of the label property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getLabel() {
-        return label;
-    }
+	public Qproperty() {
+	}
 
-    /**
-     * Sets the value of the label property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setLabel(String value) {
-        this.label = value;
-    }
+	/**
+	 * Gets the value of the entityId property.
+	 * 
+	 * @return possible object is {@link String }
+	 * 
+	 */
+	public String getEntityId() {
+		return entityId;
+	}
 
-    /**
-     * Gets the value of the value property.
-     * 
-     */
-    public String getValue() {
-        return value;
-    }
+	/**
+	 * Sets the value of the entityId property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link String }
+	 * 
+	 */
+	public void setEntityId(String value) {
+		this.entityId = value;
+	}
 
-    /**
-     * Sets the value of the value property.
-     * 
-     */
-    public void setValue(String value) {
-        this.value = value;
-    }
+	/**
+	 * Gets the value of the label property.
+	 * 
+	 * @return possible object is {@link String }
+	 * 
+	 */
+	public String getLabel() {
+		return label;
+	}
 
-    /**
-     * Gets the value of the unit property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getUnit() {
-        return unit;
-    }
+	/**
+	 * Sets the value of the label property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link String }
+	 * 
+	 */
+	public void setLabel(String value) {
+		this.label = value;
+	}
 
-    /**
-     * Sets the value of the unit property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setUnit(String value) {
-        this.unit = value;
-    }
+	/**
+	 * Gets the value of the value property.
+	 * 
+	 */
+	public String getValue() {
+		return value;
+	}
+
+	/**
+	 * Sets the value of the value property.
+	 * 
+	 */
+	public void setValue(String value) {
+		this.value = value;
+	}
+
+	/**
+	 * Gets the value of the unit property.
+	 * 
+	 * @return possible object is {@link String }
+	 * 
+	 */
+	public String getUnit() {
+		return unit;
+	}
+
+	/**
+	 * Sets the value of the unit property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link String }
+	 * 
+	 */
+	public void setUnit(String value) {
+		this.unit = value;
+	}
 
 	@Override
 	public int hashCode() {
@@ -177,7 +185,5 @@ public class Qproperty {
 			return false;
 		return true;
 	}
-    
-    
 
 }

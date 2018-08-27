@@ -10,11 +10,17 @@ package life.qbic.xml.study;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+
+import org.apache.commons.lang3.tuple.Pair;
+
+import life.qbic.xml.manager.StudyXMLParser;
 
 
 /**
@@ -176,4 +182,40 @@ public class Qcontinuous {
 		return true;
 	}
 
+	public Qcontlevel getLevelOrNull(String value) {
+			for (Qcontlevel level : getQcontlevel()) {
+				if (level.getValue().equals(value)) {
+					return level;
+				}
+			}
+			return null;
+		}
+
+	public void createLevels(Map<Pair<String, String>, List<String>> levels) {
+		for (Pair<String, String> valunit : levels.keySet()) {
+			createLevel(valunit.getLeft(), levels.get(valunit));
+		}
+	}
+
+	private void createLevel(String value, List<String> ids) {
+		Qcontlevel contLvl = StudyXMLParser.factory.createQcontlevel();
+		contLvl.setValue(value);
+		contLvl.getEntityId().addAll(ids);
+		getQcontlevel().add(contLvl);
+	}
+
+	public void update(Map<Pair<String, String>, List<String>> levels) {
+		for (Pair<String, String> level : levels.keySet()) {
+			List<String> ids = levels.get(level);
+			String value = level.getLeft();
+
+			Qcontlevel xmlLevel = getLevelOrNull(value);
+			if (xmlLevel == null) {
+				// if level exists, add all new identifiers on this level to the set, if not create it and also set value
+				createLevel(value, ids);
+			} else {
+				xmlLevel.getEntityId().addAll(ids);
+			}
+		}
+	}
 }

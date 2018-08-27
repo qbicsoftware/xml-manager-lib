@@ -8,8 +8,9 @@
 
 package life.qbic.xml.study;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -75,7 +76,7 @@ public class TechnologyType {
 	}
 
 	@XmlElement(name = "entity_id")
-    protected List<String> entityId;
+    protected Set<String> entityId;
     @XmlAttribute(name = "name", required = true)
     protected String name;
 
@@ -101,9 +102,9 @@ public class TechnologyType {
      * 
      * 
      */
-    public List<String> getEntityId() {
+    public Set<String> getEntityId() {
         if (entityId == null) {
-            entityId = new ArrayList<String>();
+            entityId = new HashSet<String>();
         }
         return this.entityId;
     }

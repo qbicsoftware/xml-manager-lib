@@ -9,11 +9,17 @@ package life.qbic.xml.study;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+
+import org.apache.commons.lang3.tuple.Pair;
+
+import life.qbic.xml.manager.StudyXMLParser;
 
 /**
  * <p>
@@ -140,4 +146,40 @@ public class Qcategorical {
 		return true;
 	}
 
+	public Qcatlevel getLevelOrNull(String value) {
+		for (Qcatlevel level : getQcatlevel()) {
+			if (level.getValue().equals(value)) {
+				return level;
+			}
+		}
+		return null;
+	}
+
+	public void createLevels(Map<Pair<String, String>, List<String>> levels) {
+		for (Pair<String, String> valunit : levels.keySet()) {
+			createLevel(valunit.getLeft(), levels.get(valunit));
+		}
+	}
+
+	private void createLevel(String value, List<String> ids) {
+		Qcatlevel catLvl = StudyXMLParser.factory.createQcatlevel();
+		catLvl.setValue(value);
+		catLvl.getEntityId().addAll(ids);
+		getQcatlevel().add(catLvl);
+	}
+
+	public void update(Map<Pair<String, String>, List<String>> levels) {
+		for (Pair<String, String> level : levels.keySet()) {
+			List<String> ids = levels.get(level);
+			String value = level.getLeft();
+
+			Qcatlevel xmlLevel = getLevelOrNull(value);
+			if (xmlLevel == null) {
+				// if level exists, add all new identifiers on this level to the set, if not create it and also set value
+				createLevel(value, ids);
+			} else {
+				xmlLevel.getEntityId().addAll(ids);
+			}
+		}
+	}
 }
