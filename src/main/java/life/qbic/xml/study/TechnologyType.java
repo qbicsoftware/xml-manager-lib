@@ -5,7 +5,6 @@
 // Generated on: 2018.08.22 at 04:15:01 PM CEST 
 //
 
-
 package life.qbic.xml.study;
 
 import java.util.HashSet;
@@ -17,11 +16,13 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for anonymous complex type.
+ * <p>
+ * Java class for anonymous complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType>
@@ -39,12 +40,22 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
-    "entityId"
-})
+@XmlType(name = "", propOrder = { "entityId" })
 public class TechnologyType {
 
-    @Override
+	/**
+	 * temporary function to store technology without samples
+	 * 
+	 * @param name
+	 */
+	public TechnologyType(String name) {
+		this.name = name;
+	}
+
+	public TechnologyType() {
+	}
+
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
@@ -76,61 +87,58 @@ public class TechnologyType {
 	}
 
 	@XmlElement(name = "entity_id")
-    protected Set<String> entityId;
-    @XmlAttribute(name = "name", required = true)
-    protected String name;
+	protected Set<String> entityId;
+	@XmlAttribute(name = "name", required = true)
+	protected String name;
 
-    /**
-     * Gets the value of the entityId property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the entityId property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getEntityId().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link String }
-     * 
-     * 
-     */
-    public Set<String> getEntityId() {
-        if (entityId == null) {
-            entityId = new HashSet<String>();
-        }
-        return this.entityId;
-    }
+	/**
+	 * Gets the value of the entityId property.
+	 * 
+	 * <p>
+	 * This accessor method returns a reference to the live list, not a
+	 * snapshot. Therefore any modification you make to the returned list will
+	 * be present inside the JAXB object. This is why there is not a
+	 * <CODE>set</CODE> method for the entityId property.
+	 * 
+	 * <p>
+	 * For example, to add a new item, do as follows:
+	 * 
+	 * <pre>
+	 * getEntityId().add(newItem);
+	 * </pre>
+	 * 
+	 * 
+	 * <p>
+	 * Objects of the following type(s) are allowed in the list {@link String }
+	 * 
+	 * 
+	 */
+	public Set<String> getEntityId() {
+		if (entityId == null) {
+			entityId = new HashSet<String>();
+		}
+		return this.entityId;
+	}
 
-    /**
-     * Gets the value of the name property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getName() {
-        return name;
-    }
+	/**
+	 * Gets the value of the name property.
+	 * 
+	 * @return possible object is {@link String }
+	 * 
+	 */
+	public String getName() {
+		return name;
+	}
 
-    /**
-     * Sets the value of the name property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setName(String value) {
-        this.name = value;
-    }
+	/**
+	 * Sets the value of the name property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link String }
+	 * 
+	 */
+	public void setName(String value) {
+		this.name = value;
+	}
 
 }
