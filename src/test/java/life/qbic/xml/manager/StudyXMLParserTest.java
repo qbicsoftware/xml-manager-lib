@@ -348,6 +348,9 @@ public class StudyXMLParserTest {
 			assertEquals(q1.get(i), q2.get(i));
 		}
 		assertEquals(secondParse2.getValue().getQfactors(), firstParse2.getValue().getQfactors());
+		
+		String xml3 = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><qexperiment>    <technology_type name=\"Transcriptomics\"/>    <qfactors/></qexperiment>";
+		assertTrue(parser.validate(xml3));
 	}
 
 	@Test
