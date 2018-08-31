@@ -27,6 +27,7 @@ import life.qbic.xml.properties.Qproperties;
 import life.qbic.xml.properties.Qproperty;
 import life.qbic.xml.properties.Unit;
 
+@Deprecated
 public class XMLParser {
 
   public Map<String, String> getMapOfProperties(JAXBElement<life.qbic.xml.properties.Qproperties> root) {
