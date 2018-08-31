@@ -209,12 +209,29 @@ public class Qcontinuous {
 			List<String> ids = levels.get(level);
 			String value = level.getLeft();
 
+			// first remove all identifiers from other levels since they can't be part of multiple levels
+			removeIDsFromOldLevels(ids, value);
+			
 			Qcontlevel xmlLevel = getLevelOrNull(value);
 			if (xmlLevel == null) {
 				// if level exists, add all new identifiers on this level to the set, if not create it and also set value
 				createLevel(value, ids);
 			} else {
 				xmlLevel.getEntityId().addAll(ids);
+			}
+		}
+	}
+
+	/**
+	 * remove new ids from every old level with the wrong level value
+	 * 
+	 * @param ids
+	 * @param newValue
+	 */
+	private void removeIDsFromOldLevels(List<String> ids, String newValue) {
+		for (Qcontlevel level : getQcontlevel()) {
+			if (!level.getValue().equals(newValue)) {
+				level.getEntityId().removeAll(ids);
 			}
 		}
 	}

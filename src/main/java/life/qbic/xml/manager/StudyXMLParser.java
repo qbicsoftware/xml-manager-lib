@@ -251,6 +251,7 @@ public class StudyXMLParser {
 		for (String id : newProps.keySet()) {
 			for (Qproperty p : newProps.get(id)) {
 				Pair<String, String> labelID = new ImmutablePair<String, String>(p.getLabel(), id);
+				// for every id and property level add if it doesn't exist, update otherwise
 				if (!labelAndID.containsKey(labelID)) {
 					existingProps.add(p);
 				} else {

@@ -83,6 +83,18 @@ public class QCategoricalTest {
 	}
 	
 	@Test
+	public void testUpdateOverwrite() {
+		Map<Pair<String, String>, List<String>> overwrite = new HashMap<Pair<String, String>, List<String>>();
+		overwrite.put(new ImmutablePair<String, String>("1", null), Arrays.asList("b", "f"));
+		overwrite.put(new ImmutablePair<String, String>("2", null), Arrays.asList("a", "h"));
+		filled.update(overwrite);
+		assertEquals(filled.getQcatlevel().size(), 2);
+		assertEquals(filled.getLevelOrNull("0"), null);
+		assertEquals(filled.getLevelOrNull("1").getEntityId(), new HashSet<String>(Arrays.asList("b","f")));
+		assertEquals(filled.getLevelOrNull("2").getEntityId(), new HashSet<String>(Arrays.asList("a","c","h")));
+	}
+	
+	@Test
 	public void testgetLevelOrNull() {
 		assertEquals(null, empty.getLevelOrNull("1"));
 		assertEquals(null, filled.getLevelOrNull("nonexistent"));
