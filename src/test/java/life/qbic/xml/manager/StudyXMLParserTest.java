@@ -351,6 +351,8 @@ public class StudyXMLParserTest {
 		
 		String xml3 = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><qexperiment>    <technology_type name=\"Transcriptomics\"/>    <qfactors/></qexperiment>";
 		assertTrue(parser.validate(xml3));
+		
+		assertFalse(parser.validate(parser.toString(empty)));
 	}
 
 	@Test
