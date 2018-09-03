@@ -340,4 +340,21 @@ public class StudyXMLParser {
 		return res;
 	}
 
+	public List<Property> getFactorsAndPropertiesForSampleCode(JAXBElement<Qexperiment> expDesign, String code) {
+		List<Property> res = new ArrayList<>();
+		List<Property> props = getPropertiesForSampleCode(expDesign).get(code);
+		if (props != null) {
+			res.addAll(props);
+		}
+		Map<Pair<String, String>, Property> factorsForLabelsAndSamples = getFactorsForLabelsAndSamples(expDesign);
+		for (String label : getFactorLabels(expDesign)) {
+			Pair<String, String> key = new ImmutablePair<>(label, code);
+			Property f = factorsForLabelsAndSamples.get(key);
+			if (f != null) {
+				res.add(f);
+			}
+		}
+		return res;
+	}
+
 }

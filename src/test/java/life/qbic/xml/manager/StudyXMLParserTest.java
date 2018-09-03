@@ -106,6 +106,19 @@ public class StudyXMLParserTest {
 	}
 
 	@Test
+	public void testGetFactorsAndPropertiesForSampleCode() {
+		List<Property> ship2 = parser.getFactorsAndPropertiesForSampleCode(fullDesign, "ship2");
+		List<Property> s5 = parser.getFactorsAndPropertiesForSampleCode(fullDesign, "5");
+		List<Property> ship2_empty = parser.getFactorsAndPropertiesForSampleCode(noProps, "ship2");
+		List<Property> s5_empty = parser.getFactorsAndPropertiesForSampleCode(noFactors, "5");
+		
+		assertTrue(ship2_empty.isEmpty());
+		assertTrue(s5_empty.isEmpty());
+		assertEquals(ship2.size(), 3);
+		assertEquals(s5.size(), 2);
+	}
+	
+	@Test
 	public void testRemoveReferencesToMissingIDs() throws JAXBException {
 		Set<String> lessIDs = new HashSet<String>(Arrays.asList("1", "2", "3", "4", "5", "ship2"));
 		Set<String> moreIDs = new HashSet<String>(
