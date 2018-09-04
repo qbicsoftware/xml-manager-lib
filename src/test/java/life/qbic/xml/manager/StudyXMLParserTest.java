@@ -125,13 +125,13 @@ public class StudyXMLParserTest {
 				Arrays.asList("8", "1", "2", "3", "4", "5", "6", "7", "ship1", "ship2"));
 		Set<String> sameIDs = new HashSet<String>(Arrays.asList("1", "2", "3", "4", "5", "6", "ship1", "ship2"));
 		
-		JAXBElement<Qexperiment> fullSame = parser.removeReferencesToMissingIDs(fullDesign, sameIDs);
-		JAXBElement<Qexperiment> fullLess = parser.removeReferencesToMissingIDs(fullDesign, lessIDs);
-		JAXBElement<Qexperiment> fullMore = parser.removeReferencesToMissingIDs(fullDesign, moreIDs);
+		JAXBElement<Qexperiment> fullSame = parser.removeReferencesToMissingIDs(fullDesign, sameIDs, false);
+		JAXBElement<Qexperiment> fullLess = parser.removeReferencesToMissingIDs(fullDesign, lessIDs, false);
+		JAXBElement<Qexperiment> fullMore = parser.removeReferencesToMissingIDs(fullDesign, moreIDs, false);
 		JAXBElement<Qexperiment> removedFactorIDs = parser.removeReferencesToMissingIDs(fullDesign,
-				new HashSet<String>(Arrays.asList("ship1", "ship2")));
+				new HashSet<String>(Arrays.asList("ship1", "ship2")), false);
 		JAXBElement<Qexperiment> removedAllIDs = parser.removeReferencesToMissingIDs(fullDesign,
-				new HashSet<String>());
+				new HashSet<String>(), false);
 
 		// if we don't remove IDs, everything should stay the same
 		assertTrue(parser.getFactorsForLabelsAndSamples(fullSame)

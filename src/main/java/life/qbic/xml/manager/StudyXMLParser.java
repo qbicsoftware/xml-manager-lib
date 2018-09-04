@@ -155,7 +155,7 @@ public class StudyXMLParser {
 	}
 
 	public JAXBElement<Qexperiment> removeReferencesToMissingIDs(JAXBElement<Qexperiment> expDesign,
-			Set<String> existingIDs) throws JAXBException {
+			Set<String> existingIDs, boolean keepTechsWithoutSamples) throws JAXBException {
 		List<TechnologyType> techTypes = getSamplesForTechTypes(expDesign);
 		List<TechnologyType> newTechTypes = new ArrayList<TechnologyType>();
 		for (TechnologyType t : techTypes) {
@@ -165,7 +165,7 @@ public class StudyXMLParser {
 					newT.getEntityId().add(code);
 				}
 			}
-			if (!newT.getEntityId().isEmpty()) {
+			if (!newT.getEntityId().isEmpty() || keepTechsWithoutSamples) {
 				newT.setName(t.getName());
 				newTechTypes.add(newT);
 			}
