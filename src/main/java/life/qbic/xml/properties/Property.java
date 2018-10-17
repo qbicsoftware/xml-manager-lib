@@ -90,4 +90,8 @@ public class Property {
     return true;
   }
 
+public void setValue(String val) {
+	this.value = val;
+}
+
 }
