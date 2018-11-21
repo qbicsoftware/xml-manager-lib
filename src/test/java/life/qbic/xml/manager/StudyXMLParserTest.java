@@ -119,6 +119,20 @@ public class StudyXMLParserTest {
 	}
 	
 	@Test
+	public void testHasReferencesToMissingIDs() throws JAXBException {
+		Set<String> lessIDs = new HashSet<String>(Arrays.asList("1", "2", "3", "4", "5", "ship2"));
+		Set<String> moreIDs = new HashSet<String>(
+				Arrays.asList("8", "1", "2", "3", "4", "5", "6", "7", "ship1", "ship2"));
+		Set<String> sameIDs = new HashSet<String>(Arrays.asList("1", "2", "3", "4", "5", "6", "ship1", "ship2"));
+		
+		assertFalse(parser.hasReferencesToMissingIDs(fullDesign, sameIDs));
+		assertTrue(parser.hasReferencesToMissingIDs(fullDesign, lessIDs));
+		assertFalse(parser.hasReferencesToMissingIDs(fullDesign, moreIDs));
+		assertTrue(parser.hasReferencesToMissingIDs(fullDesign, new HashSet<String>(Arrays.asList("ship1", "ship2"))));
+		assertTrue(parser.hasReferencesToMissingIDs(fullDesign, new HashSet<String>()));
+	}
+	
+	@Test
 	public void testRemoveReferencesToMissingIDs() throws JAXBException {
 		Set<String> lessIDs = new HashSet<String>(Arrays.asList("1", "2", "3", "4", "5", "ship2"));
 		Set<String> moreIDs = new HashSet<String>(
