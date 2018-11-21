@@ -121,6 +121,32 @@ public class StudyXMLParser {
 		return res;
 	}
 
+	public Map<String, List<Integer>> getSampleSizesOfFactorLevels(JAXBElement<Qexperiment> expDesign) {
+		Map<String, List<Integer>> res = new HashMap<>();
+		Qfactors factors = expDesign.getValue().getQfactors();
+		if (factors != null) {
+			for (Qcategorical f : factors.getQcategorical()) {
+				Qcategorical cat = (Qcategorical) f;
+				String lab = cat.getLabel();
+				List<Integer> sampleSizes = new ArrayList<>();
+				for (Qcatlevel level : cat.getQcatlevel()) {
+					sampleSizes.add(level.getEntityId().size());
+				}
+				res.put(lab, sampleSizes);
+			}
+			for (Qcontinuous f : factors.getQcontinuous()) {
+				Qcontinuous cont = (Qcontinuous) f;
+				String lab = cont.getLabel();
+				List<Integer> sampleSizes = new ArrayList<>();
+				for (Qcontlevel level : cont.getQcontlevel()) {
+					sampleSizes.add(level.getEntityId().size());
+				}
+				res.put(lab, sampleSizes);
+			}
+		}
+		return res;
+	}
+
 	public Map<Pair<String, String>, Property> getFactorsForLabelsAndSamples(JAXBElement<Qexperiment> expDesign) {
 		Map<Pair<String, String>, Property> res = new HashMap<Pair<String, String>, Property>();
 		Qfactors factors = expDesign.getValue().getQfactors();
@@ -143,7 +169,7 @@ public class StudyXMLParser {
 				String unit = cont.getUnit();
 				for (Qcontlevel level : cont.getQcontlevel()) {
 					String val = level.getValue();
-					Property p = new Property(lab, val, Unit.fromString(unit), PropertyType.Factor);
+					Property p = new Property(lab, val, Unit.fromString(unit), PropertyType.Factor);//TODO check fromString use cases
 					for (String sampleCode : level.getEntityId()) {
 						Pair<String, String> labelCode = new ImmutablePair<String, String>(lab, sampleCode);
 						res.put(labelCode, p);
@@ -152,6 +178,34 @@ public class StudyXMLParser {
 			}
 		}
 		return res;
+	}
+
+	public boolean hasReferencesToMissingIDs(JAXBElement<Qexperiment> expDesign, Set<String> existingIDs) {
+		List<TechnologyType> techTypes = getSamplesForTechTypes(expDesign);
+		for (TechnologyType t : techTypes) {
+			for (String code : t.getEntityId()) {
+				if (!existingIDs.contains(code)) {
+					return true;
+				}
+			}
+		}
+
+		Map<String, List<Property>> props = getPropertiesForSampleCode(expDesign);
+		for (String id : props.keySet()) {
+			if (!existingIDs.contains(id)) {
+				return true;
+			}
+		}
+
+		Map<Pair<String, String>, Property> factors = getFactorsForLabelsAndSamples(expDesign);
+
+		for (Pair<String, String> labelAndCode : factors.keySet()) {
+			String id = labelAndCode.getRight();
+			if (!existingIDs.contains(id)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public JAXBElement<Qexperiment> removeReferencesToMissingIDs(JAXBElement<Qexperiment> expDesign,
