@@ -67,12 +67,11 @@ public class StudyXMLParser {
 		return res;
 	}
 
-	public JAXBElement<Qexperiment> createNewDesign(List<TechnologyType> techTypes,
+	public JAXBElement<Qexperiment> createNewDesign(Set<String> studyDesign, List<TechnologyType> techTypes,
 			Map<String, Map<Pair<String, String>, List<String>>> expDesign, Map<String, List<Qproperty>> otherProps)
 			throws JAXBException {
 		JAXBElement<Qexperiment> res = getEmptyXML();
-		mergeDesigns(res, techTypes, expDesign, otherProps);
-
+		mergeDesigns(res, studyDesign, techTypes, expDesign, otherProps);
 		return res;
 	}
 
@@ -146,32 +145,6 @@ public class StudyXMLParser {
 		}
 		return res;
 	}
-	//TODO
-	//	public Map<String, List<Integer>> getSampleSizesOfFactorLevels(JAXBElement<Qexperiment> expDesign) {
-	//		Map<String, List<Integer>> res = new HashMap<>();
-	//		Qfactors factors = expDesign.getValue().getQfactors();
-	//		if (factors != null) {
-	//			for (Qcategorical f : factors.getQcategorical()) {
-	//				Qcategorical cat = (Qcategorical) f;
-	//				String lab = cat.getLabel();
-	//				List<Integer> sampleSizes = new ArrayList<>();
-	//				for (Qcatlevel level : cat.getQcatlevel()) {
-	//					sampleSizes.add(level.getEntityId().size());
-	//				}
-	//				res.put(lab, sampleSizes);
-	//			}
-	//			for (Qcontinuous f : factors.getQcontinuous()) {
-	//				Qcontinuous cont = (Qcontinuous) f;
-	//				String lab = cont.getLabel();
-	//				List<Integer> sampleSizes = new ArrayList<>();
-	//				for (Qcontlevel level : cont.getQcontlevel()) {
-	//					sampleSizes.add(level.getEntityId().size());
-	//				}
-	//				res.put(lab, sampleSizes);
-	//			}
-	//		}
-	//		return res;
-	//	}
 
 	public Map<Pair<String, String>, Property> getFactorsForLabelsAndSamples(JAXBElement<Qexperiment> expDesign) {
 		Map<Pair<String, String>, Property> res = new HashMap<Pair<String, String>, Property>();
@@ -236,6 +209,7 @@ public class StudyXMLParser {
 
 	public JAXBElement<Qexperiment> removeReferencesToMissingIDs(JAXBElement<Qexperiment> expDesign,
 			Set<String> existingIDs, boolean keepTechsWithoutSamples) throws JAXBException {
+		Set<String> studyDesigns = getStudyDesigns(expDesign);
 		List<TechnologyType> techTypes = getSamplesForTechTypes(expDesign);
 		List<TechnologyType> newTechTypes = new ArrayList<TechnologyType>();
 		for (TechnologyType t : techTypes) {
@@ -300,7 +274,24 @@ public class StudyXMLParser {
 				}
 			}
 		}
-		return createNewDesign(newTechTypes, newFactors, newProps);
+		return createNewDesign(studyDesigns, newTechTypes, newFactors, newProps);
+	}
+
+	private Set<String> getStudyDesigns(JAXBElement<Qexperiment> expDesign) {
+		Qexperiment root = expDesign.getValue();
+		Set<String> res = new HashSet<>();
+		for(Object d : root.getStudyDesign()) {
+			res.add(d.toString());
+		}
+		return res;
+	}
+
+	private JAXBElement<Qexperiment> addStudyDesignsToDesign(JAXBElement<Qexperiment> experiment,
+			Set<String> studyDesigns) {
+		Qexperiment root = experiment.getValue();
+		root.getStudyDesign().addAll(studyDesigns);
+		//TODO works?
+		return experiment;
 	}
 
 	private JAXBElement<Qexperiment> addTechTypesToDesign(JAXBElement<Qexperiment> experiment,
@@ -385,9 +376,11 @@ public class StudyXMLParser {
 		return existing;
 	}
 
-	public JAXBElement<Qexperiment> mergeDesigns(JAXBElement<Qexperiment> existing, List<TechnologyType> techTypes,
-			Map<String, Map<Pair<String, String>, List<String>>> expDesign, Map<String, List<Qproperty>> otherProps) {
+	public JAXBElement<Qexperiment> mergeDesigns(JAXBElement<Qexperiment> existing, Set<String> studyDesigns,
+			List<TechnologyType> techTypes, Map<String, Map<Pair<String, String>, List<String>>> expDesign,
+			Map<String, List<Qproperty>> otherProps) {
 
+		addStudyDesignsToDesign(existing, studyDesigns);
 		addTechTypesToDesign(existing, techTypes);
 		addPropertiesToDesign(existing, otherProps);
 		addFactorsToDesign(existing, expDesign);
