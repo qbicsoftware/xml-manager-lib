@@ -121,31 +121,57 @@ public class StudyXMLParser {
 		return res;
 	}
 
-	public Map<String, List<Integer>> getSampleSizesOfFactorLevels(JAXBElement<Qexperiment> expDesign) {
-		Map<String, List<Integer>> res = new HashMap<>();
+	public Map<String, Map<String, Set<String>>> getSamplesPerLevelForFactors(JAXBElement<Qexperiment> expDesign) {
+		Map<String, Map<String, Set<String>>> res = new HashMap<>();
 		Qfactors factors = expDesign.getValue().getQfactors();
 		if (factors != null) {
 			for (Qcategorical f : factors.getQcategorical()) {
 				Qcategorical cat = (Qcategorical) f;
 				String lab = cat.getLabel();
-				List<Integer> sampleSizes = new ArrayList<>();
+				Map<String, Set<String>> samplesPerLevel = new HashMap<>();
 				for (Qcatlevel level : cat.getQcatlevel()) {
-					sampleSizes.add(level.getEntityId().size());
+					samplesPerLevel.put(level.getValue(), level.getEntityId());
 				}
-				res.put(lab, sampleSizes);
+				res.put(lab, samplesPerLevel);
 			}
 			for (Qcontinuous f : factors.getQcontinuous()) {
 				Qcontinuous cont = (Qcontinuous) f;
 				String lab = cont.getLabel();
-				List<Integer> sampleSizes = new ArrayList<>();
+				Map<String, Set<String>> samplesPerLevel = new HashMap<>();
 				for (Qcontlevel level : cont.getQcontlevel()) {
-					sampleSizes.add(level.getEntityId().size());
+					samplesPerLevel.put(level.getValue(), level.getEntityId());
 				}
-				res.put(lab, sampleSizes);
+				res.put(lab, samplesPerLevel);
 			}
 		}
 		return res;
 	}
+	//TODO
+	//	public Map<String, List<Integer>> getSampleSizesOfFactorLevels(JAXBElement<Qexperiment> expDesign) {
+	//		Map<String, List<Integer>> res = new HashMap<>();
+	//		Qfactors factors = expDesign.getValue().getQfactors();
+	//		if (factors != null) {
+	//			for (Qcategorical f : factors.getQcategorical()) {
+	//				Qcategorical cat = (Qcategorical) f;
+	//				String lab = cat.getLabel();
+	//				List<Integer> sampleSizes = new ArrayList<>();
+	//				for (Qcatlevel level : cat.getQcatlevel()) {
+	//					sampleSizes.add(level.getEntityId().size());
+	//				}
+	//				res.put(lab, sampleSizes);
+	//			}
+	//			for (Qcontinuous f : factors.getQcontinuous()) {
+	//				Qcontinuous cont = (Qcontinuous) f;
+	//				String lab = cont.getLabel();
+	//				List<Integer> sampleSizes = new ArrayList<>();
+	//				for (Qcontlevel level : cont.getQcontlevel()) {
+	//					sampleSizes.add(level.getEntityId().size());
+	//				}
+	//				res.put(lab, sampleSizes);
+	//			}
+	//		}
+	//		return res;
+	//	}
 
 	public Map<Pair<String, String>, Property> getFactorsForLabelsAndSamples(JAXBElement<Qexperiment> expDesign) {
 		Map<Pair<String, String>, Property> res = new HashMap<Pair<String, String>, Property>();
