@@ -196,6 +196,10 @@ public class Qcategorical {
 		for (Qcatlevel level : getQcatlevel()) {
 			if (!level.getValue().equals(newValue)) {
 				level.getEntityId().removeAll(ids);
+				// remove empty level completely
+				if(level.getEntityId().isEmpty()) {
+					getQcatlevel().remove(level);
+				}
 			}
 		}
 	}

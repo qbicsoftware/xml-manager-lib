@@ -232,6 +232,10 @@ public class Qcontinuous {
 		for (Qcontlevel level : getQcontlevel()) {
 			if (!level.getValue().equals(newValue)) {
 				level.getEntityId().removeAll(ids);
+				// remove empty level completely
+				if(level.getEntityId().isEmpty()) {
+					getQcontlevel().remove(level);
+				}
 			}
 		}
 	}
