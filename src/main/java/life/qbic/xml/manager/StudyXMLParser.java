@@ -350,7 +350,7 @@ public class StudyXMLParser {
 				// no unit: categorical factor
 				if (unit == null || unit.isEmpty()) {
 					Qcategorical oldCat = factors.getCatFactorOrNull(label);
-					// no factor, add everything
+					// no old factor, add everything
 					if (oldCat == null) {
 						factors.createNewFactor(label, levels);
 					}
@@ -362,7 +362,7 @@ public class StudyXMLParser {
 				// unit: continuous factor
 				else {
 					Qcontinuous oldCont = factors.getContFactorOrNull(label);
-					// no factor, add everything
+					// no old factor, add everything
 					if (oldCont == null) {
 						factors.createNewFactor(label, unit, levels);
 					}

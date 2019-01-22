@@ -5,10 +5,8 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
@@ -20,11 +18,8 @@ import org.apache.logging.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
-import life.qbic.xml.properties.Unit;
 import life.qbic.xml.study.Qexperiment;
 import life.qbic.xml.study.Qfactors;
-import life.qbic.xml.study.Qproperty;
-import life.qbic.xml.study.TechnologyType;
 
 public class QfactorsTest {
 
