@@ -5,7 +5,6 @@
 // Generated on: 2018.08.22 at 04:15:01 PM CEST 
 //
 
-
 package life.qbic.xml.study;
 
 import java.util.ArrayList;
@@ -16,11 +15,13 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for anonymous complex type.
+ * <p>
+ * Java class for anonymous complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType>
@@ -117,100 +118,125 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
-    "technologyType",
-    "qfactors",
-    "qproperty"
-})
+@XmlType(name = "", propOrder = { "studyDesign", "technologyType", "qfactors", "qproperty" })
 @XmlRootElement(name = "qexperiment")
 public class Qexperiment {
 
-    @XmlElement(name = "technology_type")
-    protected List<TechnologyType> technologyType;
-    @XmlElement(required = true)
-    protected Qfactors qfactors;
-    protected List<Qproperty> qproperty;
-
+	@XmlElement(name = "study_design")
+	protected List<Object> studyDesign;
+	@XmlElement(name = "technology_type")
+	protected List<TechnologyType> technologyType;
+	@XmlElement(required = true)
+	protected Qfactors qfactors;
+	protected List<Qproperty> qproperty;
     /**
-     * Gets the value of the technologyType property.
-     * 
+     * Gets the value of the studyDesign property.
+     *
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the technologyType property.
-     * 
+     * This is why there is not a <CODE>set</CODE> method for the studyDesign property.
+     *
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
-     *    getTechnologyType().add(newItem);
+     *    getStudyDesign().add(newItem);
      * </pre>
-     * 
-     * 
+     *
+     *
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link TechnologyType }
-     * 
-     * 
+     * {@link Object }
+     *
+     *
      */
-    public List<TechnologyType> getTechnologyType() {
-        if (technologyType == null) {
-            technologyType = new ArrayList<TechnologyType>();
+    public List<Object> getStudyDesign() {
+        if (studyDesign == null) {
+            studyDesign = new ArrayList<Object>();
         }
-        return this.technologyType;
+        return this.studyDesign;
     }
+    
+	/**
+	 * Gets the value of the technologyType property.
+	 * 
+	 * <p>
+	 * This accessor method returns a reference to the live list, not a
+	 * snapshot. Therefore any modification you make to the returned list will
+	 * be present inside the JAXB object. This is why there is not a
+	 * <CODE>set</CODE> method for the technologyType property.
+	 * 
+	 * <p>
+	 * For example, to add a new item, do as follows:
+	 * 
+	 * <pre>
+	 * getTechnologyType().add(newItem);
+	 * </pre>
+	 * 
+	 * 
+	 * <p>
+	 * Objects of the following type(s) are allowed in the list
+	 * {@link TechnologyType }
+	 * 
+	 * 
+	 */
+	public List<TechnologyType> getTechnologyType() {
+		if (technologyType == null) {
+			technologyType = new ArrayList<TechnologyType>();
+		}
+		return this.technologyType;
+	}
 
-    /**
-     * Gets the value of the qfactors property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Qfactors }
-     *     
-     */
-    public Qfactors getQfactors() {
-        return qfactors;
-    }
+	/**
+	 * Gets the value of the qfactors property.
+	 * 
+	 * @return possible object is {@link Qfactors }
+	 * 
+	 */
+	public Qfactors getQfactors() {
+		return qfactors;
+	}
 
-    /**
-     * Sets the value of the qfactors property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Qfactors }
-     *     
-     */
-    public void setQfactors(Qfactors value) {
-        this.qfactors = value;
-    }
+	/**
+	 * Sets the value of the qfactors property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link Qfactors }
+	 * 
+	 */
+	public void setQfactors(Qfactors value) {
+		this.qfactors = value;
+	}
 
-    /**
-     * Gets the value of the qproperty property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the qproperty property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getQproperty().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link Qproperty }
-     * 
-     * 
-     */
-    public List<Qproperty> getQproperty() {
-        if (qproperty == null) {
-            qproperty = new ArrayList<Qproperty>();
-        }
-        return this.qproperty;
-    }
+	/**
+	 * Gets the value of the qproperty property.
+	 * 
+	 * <p>
+	 * This accessor method returns a reference to the live list, not a
+	 * snapshot. Therefore any modification you make to the returned list will
+	 * be present inside the JAXB object. This is why there is not a
+	 * <CODE>set</CODE> method for the qproperty property.
+	 * 
+	 * <p>
+	 * For example, to add a new item, do as follows:
+	 * 
+	 * <pre>
+	 * getQproperty().add(newItem);
+	 * </pre>
+	 * 
+	 * 
+	 * <p>
+	 * Objects of the following type(s) are allowed in the list {@link Qproperty
+	 * }
+	 * 
+	 * 
+	 */
+	public List<Qproperty> getQproperty() {
+		if (qproperty == null) {
+			qproperty = new ArrayList<Qproperty>();
+		}
+		return this.qproperty;
+	}
 
 }

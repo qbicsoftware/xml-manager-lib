@@ -37,9 +37,11 @@ public class StudyXMLParserTest {
 	private JAXBElement<Qexperiment> noTypes;
 	private JAXBElement<Qexperiment> noPropsNoFactors;
 	private JAXBElement<Qexperiment> noFactors;
+	private JAXBElement<Qexperiment> noDesignType;
 
 	private Map<String, Map<Pair<String, String>, List<String>>> expDesign;
 	private Map<String, Set<String>> techTypes;
+	private Set<String> designTypes;
 	private Map<String, List<Qproperty>> otherProps;
 
 	@Before
@@ -47,6 +49,7 @@ public class StudyXMLParserTest {
 		parser = new StudyXMLParser();
 		empty = parser.getEmptyXML();
 
+		designTypes = new HashSet<String>(Arrays.asList("Perturbation Design","Bauhaus"));
 		techTypes = new HashMap<String, Set<String>>();
 		Set<String> t1 = new HashSet<String>(Arrays.asList("1", "2", "3"));
 		Set<String> t2 = new HashSet<String>(Arrays.asList("1", "4", "5"));
@@ -87,13 +90,14 @@ public class StudyXMLParserTest {
 
 		List<TechnologyType> techs = parser.mapToTechnologyTypes(techTypes);
 
-		fullDesign = parser.createNewDesign(techs, expDesign, otherProps);
-		noProps = parser.createNewDesign(techs, expDesign, new HashMap<String, List<Qproperty>>());
-		noTypes = parser.createNewDesign(new ArrayList<TechnologyType>(), expDesign, otherProps);
-		noPropsNoFactors = parser.createNewDesign(techs, new HashMap<String, Map<Pair<String, String>, List<String>>>(),
+		fullDesign = parser.createNewDesign(designTypes, techs, expDesign, otherProps);
+		noProps = parser.createNewDesign(designTypes, techs, expDesign, new HashMap<String, List<Qproperty>>());
+		noTypes = parser.createNewDesign(designTypes, new ArrayList<TechnologyType>(), expDesign, otherProps);
+		noPropsNoFactors = parser.createNewDesign(designTypes, techs, new HashMap<String, Map<Pair<String, String>, List<String>>>(),
 				new HashMap<String, List<Qproperty>>());
-		noFactors = parser.createNewDesign(techs, new HashMap<String, Map<Pair<String, String>, List<String>>>(),
+		noFactors = parser.createNewDesign(designTypes, techs, new HashMap<String, Map<Pair<String, String>, List<String>>>(),
 				otherProps);
+		noDesignType = parser.createNewDesign(new HashSet<String>(), techs, expDesign, otherProps);
 	}
 
 	@Test

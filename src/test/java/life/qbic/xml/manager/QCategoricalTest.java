@@ -26,6 +26,7 @@ public class QCategoricalTest {
 	private static final Logger logger = LogManager.getLogger(QCategoricalTest.class);
 	private Qcategorical empty;
 	private Qcategorical filled;
+	private Qcategorical filled2;
 
 	@Before
 	public void setUp() throws JAXBException {
@@ -39,6 +40,16 @@ public class QCategoricalTest {
 		c2.setValue("2");
 		c2.getEntityId().addAll(Arrays.asList("b", "c"));
 		filled.getQcatlevel().addAll(new ArrayList<Qcatlevel>(Arrays.asList(c1, c2)));
+
+		filled2 = StudyXMLParser.factory.createQcategorical();
+		filled2.setLabel("filled");
+		Qcatlevel c3 = StudyXMLParser.factory.createQcatlevel();
+		c3.setValue("1");
+		c3.getEntityId().add("a");
+		Qcatlevel c4 = StudyXMLParser.factory.createQcatlevel();
+		c4.setValue("4");
+		c4.getEntityId().addAll(Arrays.asList("g", "h"));
+		filled2.getQcatlevel().addAll(new ArrayList<Qcatlevel>(Arrays.asList(c3, c4)));
 	}
 
 	@Test
@@ -47,19 +58,19 @@ public class QCategoricalTest {
 		levels.put(new ImmutablePair<String, String>("3", null), Arrays.asList("d"));
 		levels.put(new ImmutablePair<String, String>("4", null), Arrays.asList("e", "f"));
 		empty.createLevels(levels);
-		
+
 		assertEquals(empty.getQcatlevel().size(), 2);
 		assertEquals(empty.getLevelOrNull("1"), null);
 		assertEquals(empty.getLevelOrNull("3").getEntityId(), new HashSet<String>(Arrays.asList("d")));
-		assertEquals(empty.getLevelOrNull("4").getEntityId(), new HashSet<String>(Arrays.asList("e","f")));
+		assertEquals(empty.getLevelOrNull("4").getEntityId(), new HashSet<String>(Arrays.asList("e", "f")));
 
 		filled.createLevels(levels);
 		assertEquals(filled.getQcatlevel().size(), 4);
 		assertEquals(filled.getLevelOrNull("0"), null);
 		assertEquals(filled.getLevelOrNull("1").getEntityId(), new HashSet<String>(Arrays.asList("a")));
-		assertEquals(filled.getLevelOrNull("2").getEntityId(), new HashSet<String>(Arrays.asList("b","c")));
+		assertEquals(filled.getLevelOrNull("2").getEntityId(), new HashSet<String>(Arrays.asList("b", "c")));
 		assertEquals(filled.getLevelOrNull("3").getEntityId(), new HashSet<String>(Arrays.asList("d")));
-		assertEquals(filled.getLevelOrNull("4").getEntityId(), new HashSet<String>(Arrays.asList("e","f")));
+		assertEquals(filled.getLevelOrNull("4").getEntityId(), new HashSet<String>(Arrays.asList("e", "f")));
 	}
 
 	@Test
@@ -68,20 +79,28 @@ public class QCategoricalTest {
 		levels.put(new ImmutablePair<String, String>("2", null), Arrays.asList("e", "f"));
 		levels.put(new ImmutablePair<String, String>("3", null), Arrays.asList("g", "h"));
 		empty.update(levels);
-		
+
 		assertEquals(empty.getQcatlevel().size(), 2);
 		assertEquals(empty.getLevelOrNull("1"), null);
-		assertEquals(empty.getLevelOrNull("2").getEntityId(), new HashSet<String>(Arrays.asList("e","f")));
-		assertEquals(empty.getLevelOrNull("3").getEntityId(), new HashSet<String>(Arrays.asList("g","h")));
+		assertEquals(empty.getLevelOrNull("2").getEntityId(), new HashSet<String>(Arrays.asList("e", "f")));
+		assertEquals(empty.getLevelOrNull("3").getEntityId(), new HashSet<String>(Arrays.asList("g", "h")));
 
 		filled.update(levels);
 		assertEquals(filled.getQcatlevel().size(), 3);
 		assertEquals(filled.getLevelOrNull("0"), null);
 		assertEquals(filled.getLevelOrNull("1").getEntityId(), new HashSet<String>(Arrays.asList("a")));
-		assertEquals(filled.getLevelOrNull("2").getEntityId(), new HashSet<String>(Arrays.asList("b","c","e","f")));
-		assertEquals(filled.getLevelOrNull("3").getEntityId(), new HashSet<String>(Arrays.asList("g","h")));
+		assertEquals(filled.getLevelOrNull("2").getEntityId(), new HashSet<String>(Arrays.asList("b", "c", "e", "f")));
+		assertEquals(filled.getLevelOrNull("3").getEntityId(), new HashSet<String>(Arrays.asList("g", "h")));
+
+		filled2.update(levels);
+		assertEquals(filled2.getQcatlevel().size(), 3);
+		assertEquals(filled2.getLevelOrNull("0"), null);
+		assertEquals(filled2.getLevelOrNull("1").getEntityId(), new HashSet<String>(Arrays.asList("a")));
+		assertEquals(filled2.getLevelOrNull("2").getEntityId(), new HashSet<String>(Arrays.asList("e", "f")));
+		assertEquals(filled2.getLevelOrNull("3").getEntityId(), new HashSet<String>(Arrays.asList("g", "h")));
+		assertEquals(filled2.getLevelOrNull("4"), null);
 	}
-	
+
 	@Test
 	public void testUpdateOverwrite() {
 		Map<Pair<String, String>, List<String>> overwrite = new HashMap<Pair<String, String>, List<String>>();
@@ -90,10 +109,10 @@ public class QCategoricalTest {
 		filled.update(overwrite);
 		assertEquals(filled.getQcatlevel().size(), 2);
 		assertEquals(filled.getLevelOrNull("0"), null);
-		assertEquals(filled.getLevelOrNull("1").getEntityId(), new HashSet<String>(Arrays.asList("b","f")));
-		assertEquals(filled.getLevelOrNull("2").getEntityId(), new HashSet<String>(Arrays.asList("a","c","h")));
+		assertEquals(filled.getLevelOrNull("1").getEntityId(), new HashSet<String>(Arrays.asList("b", "f")));
+		assertEquals(filled.getLevelOrNull("2").getEntityId(), new HashSet<String>(Arrays.asList("a", "c", "h")));
 	}
-	
+
 	@Test
 	public void testgetLevelOrNull() {
 		assertEquals(null, empty.getLevelOrNull("1"));
