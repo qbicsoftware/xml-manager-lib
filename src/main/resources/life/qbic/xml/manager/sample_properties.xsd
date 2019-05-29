@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:element name="qproperties">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="qfactors" minOccurs="0" maxOccurs="1"/>
+        <xs:element ref="qproperty" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="qfactors">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="qcategorical" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element ref="qcontinous" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:simpleType name="variable_name_format">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="(\p{Ll}+_?\p{Ll}*)+(\p{Ll}|\p{N}*)"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="unit_types">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="s"/><!-- second -->
+      <xs:enumeration value="min"/><!-- minute -->
+      <xs:enumeration value="h"/><!-- hour -->
+      <xs:enumeration value="d"/><!-- day -->    
+      
+      <xs:enumeration value="pg"/><!-- picogram -->
+      <xs:enumeration value="ng"/><!-- nanogram -->
+      <xs:enumeration value="μg"/><!-- microgram -->
+      <xs:enumeration value="mg"/><!-- milligram -->
+      <xs:enumeration value="g"/><!-- gram -->
+      <xs:enumeration value="kg"/><!-- kilogram -->
+      
+      <xs:enumeration value="m"/><!-- meter -->
+      
+      <xs:enumeration value="A"/><!-- Ampere -->
+      <xs:enumeration value="K"/><!-- Kelvin -->
+      <xs:enumeration value="mol"/><!-- mole -->
+      <xs:enumeration value="cd"/><!-- Candela -->
+      <xs:enumeration value="Pa"/><!-- Pascal -->
+      <xs:enumeration value="J"/><!-- Joule -->
+      <xs:enumeration value="W"/><!-- Watt -->
+      <xs:enumeration value="N"/><!-- Newton -->
+      <xs:enumeration value="T"/><!-- Tesla -->
+      <xs:enumeration value="H"/><!-- Henry -->
+      <xs:enumeration value="C"/><!-- Coulomb -->
+      <xs:enumeration value="V"/><!-- Volt -->
+      <xs:enumeration value="F"/><!-- Farad -->
+      <xs:enumeration value="S"/><!-- Siemens -->
+      <xs:enumeration value="Wb"/><!-- Weber -->
+      <xs:enumeration value="Ω"/><!-- Ohm -->
+      <xs:enumeration value="Hz"/><!-- Hertz -->
+      <xs:enumeration value="lx"/><!-- Lux -->
+      <xs:enumeration value="lm"/><!-- Lumen -->
+      <xs:enumeration value="Bq"/><!-- Becquerel -->
+      <xs:enumeration value="Gy"/><!-- Gray -->
+      <xs:enumeration value="Sv"/><!-- Sievert -->
+      <xs:enumeration value="kat"/><!-- Katal -->
+      
+      <xs:enumeration value="μL"/><!-- microliter -->
+      <xs:enumeration value="mL"/><!-- milliliter -->   
+      <xs:enumeration value="L"/><!-- liter -->
+      
+      <xs:enumeration value="pg/L"/><!-- picogram per liter -->
+      <xs:enumeration value="ng/L"/><!-- nanogram per liter -->
+      <xs:enumeration value="μg/L"/><!-- microgram per liter -->
+      <xs:enumeration value="mg/L"/><!-- milligram per liter -->
+      <xs:enumeration value="g/L"/><!-- gram per liter -->
+      <xs:enumeration value="pmol/L"/><!-- picomole per liter -->
+      <xs:enumeration value="nmol/L"/><!-- nanomole per liter -->
+      <xs:enumeration value="μmol/L"/><!-- micromole per liter -->
+      <xs:enumeration value="mmol/L"/><!-- millimole per liter -->
+      <xs:enumeration value="mol/L"/><!-- mole per liter -->
+      
+      <xs:enumeration value="arb. unit"/><!-- arbitrary unit -->
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:element name="qcategorical">
+    <xs:complexType>
+      <xs:attribute name="label" type="variable_name_format" use="required"/> 
+      <xs:attribute name="value" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="qcontinous">
+    <xs:complexType>
+      <xs:attribute name="label" type="variable_name_format" use="required"/>
+      <xs:attribute name="unit" type="unit_types" use="required"/>
+      <xs:attribute name="value" type="xs:decimal" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="qproperty">
+    <xs:complexType>
+      <xs:attribute name="label" type="variable_name_format" use="required"/>
+      <xs:attribute name="unit" type="unit_types"/>
+      <xs:attribute name="value" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -49,7 +49,7 @@ public class StudyXMLParserTest {
 		parser = new StudyXMLParser();
 		empty = parser.getEmptyXML();
 
-		designTypes = new HashSet<String>(Arrays.asList("Perturbation Design","Bauhaus"));
+		designTypes = new HashSet<String>(Arrays.asList("Perturbation Design", "Bauhaus"));
 		techTypes = new HashMap<String, Set<String>>();
 		Set<String> t1 = new HashSet<String>(Arrays.asList("1", "2", "3"));
 		Set<String> t2 = new HashSet<String>(Arrays.asList("1", "4", "5"));
@@ -93,10 +93,10 @@ public class StudyXMLParserTest {
 		fullDesign = parser.createNewDesign(designTypes, techs, expDesign, otherProps);
 		noProps = parser.createNewDesign(designTypes, techs, expDesign, new HashMap<String, List<Qproperty>>());
 		noTypes = parser.createNewDesign(designTypes, new ArrayList<TechnologyType>(), expDesign, otherProps);
-		noPropsNoFactors = parser.createNewDesign(designTypes, techs, new HashMap<String, Map<Pair<String, String>, List<String>>>(),
-				new HashMap<String, List<Qproperty>>());
-		noFactors = parser.createNewDesign(designTypes, techs, new HashMap<String, Map<Pair<String, String>, List<String>>>(),
-				otherProps);
+		noPropsNoFactors = parser.createNewDesign(designTypes, techs,
+				new HashMap<String, Map<Pair<String, String>, List<String>>>(), new HashMap<String, List<Qproperty>>());
+		noFactors = parser.createNewDesign(designTypes, techs,
+				new HashMap<String, Map<Pair<String, String>, List<String>>>(), otherProps);
 		noDesignType = parser.createNewDesign(new HashSet<String>(), techs, expDesign, otherProps);
 	}
 
@@ -115,41 +115,41 @@ public class StudyXMLParserTest {
 		List<Property> s5 = parser.getFactorsAndPropertiesForSampleCode(fullDesign, "5");
 		List<Property> ship2_empty = parser.getFactorsAndPropertiesForSampleCode(noProps, "ship2");
 		List<Property> s5_empty = parser.getFactorsAndPropertiesForSampleCode(noFactors, "5");
-		
+
 		assertTrue(ship2_empty.isEmpty());
 		assertTrue(s5_empty.isEmpty());
 		assertEquals(ship2.size(), 3);
 		assertEquals(s5.size(), 2);
 	}
-	
+
 	@Test
 	public void testHasReferencesToMissingIDs() throws JAXBException {
 		Set<String> lessIDs = new HashSet<String>(Arrays.asList("1", "2", "3", "4", "5", "ship2"));
 		Set<String> moreIDs = new HashSet<String>(
 				Arrays.asList("8", "1", "2", "3", "4", "5", "6", "7", "ship1", "ship2"));
 		Set<String> sameIDs = new HashSet<String>(Arrays.asList("1", "2", "3", "4", "5", "6", "ship1", "ship2"));
-		
+
 		assertFalse(parser.hasReferencesToMissingIDs(fullDesign, sameIDs));
 		assertTrue(parser.hasReferencesToMissingIDs(fullDesign, lessIDs));
 		assertFalse(parser.hasReferencesToMissingIDs(fullDesign, moreIDs));
 		assertTrue(parser.hasReferencesToMissingIDs(fullDesign, new HashSet<String>(Arrays.asList("ship1", "ship2"))));
 		assertTrue(parser.hasReferencesToMissingIDs(fullDesign, new HashSet<String>()));
 	}
-	
+
 	@Test
 	public void testRemoveReferencesToMissingIDs() throws JAXBException {
 		Set<String> lessIDs = new HashSet<String>(Arrays.asList("1", "2", "3", "4", "5", "ship2"));
 		Set<String> moreIDs = new HashSet<String>(
 				Arrays.asList("8", "1", "2", "3", "4", "5", "6", "7", "ship1", "ship2"));
 		Set<String> sameIDs = new HashSet<String>(Arrays.asList("1", "2", "3", "4", "5", "6", "ship1", "ship2"));
-		
+
 		JAXBElement<Qexperiment> fullSame = parser.removeReferencesToMissingIDs(fullDesign, sameIDs, false);
 		JAXBElement<Qexperiment> fullLess = parser.removeReferencesToMissingIDs(fullDesign, lessIDs, false);
 		JAXBElement<Qexperiment> fullMore = parser.removeReferencesToMissingIDs(fullDesign, moreIDs, false);
 		JAXBElement<Qexperiment> removedFactorIDs = parser.removeReferencesToMissingIDs(fullDesign,
 				new HashSet<String>(Arrays.asList("ship1", "ship2")), false);
-		JAXBElement<Qexperiment> removedAllIDs = parser.removeReferencesToMissingIDs(fullDesign,
-				new HashSet<String>(), false);
+		JAXBElement<Qexperiment> removedAllIDs = parser.removeReferencesToMissingIDs(fullDesign, new HashSet<String>(),
+				false);
 
 		// if we don't remove IDs, everything should stay the same
 		assertTrue(parser.getFactorsForLabelsAndSamples(fullSame)
@@ -328,7 +328,9 @@ public class StudyXMLParserTest {
 
 	@Test
 	public void testParseXMLString() throws JAXBException {
-		String xml1 = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" + "<qexperiment>"
+		String xml1 = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" + "<qexperiment "
+				+ "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "
+				+ "xsi:schemaLocation=\"https://github.com/qbicsoftware/xml-manager-lib/blob/release/1.2.0/src/test/resources/life/qbic/xml/manager/qproperties.xsd\">"
 				+ "	<technology_type name=\"RNA-SEQ\">" + "<entity_id>QABCD004AF</entity_id>" + "</technology_type>"
 				+ "	<technology_type name = \"Microarray Expression Analysis\"><entity_id>QABCD004AF</entity_id></technology_type>"
 				+ "    <qfactors>" + "        <qcategorical label=\"phenotype\">"
@@ -364,10 +366,12 @@ public class StudyXMLParserTest {
 		}
 		assertEquals(secondParse1.getValue().getQfactors(), firstParse1.getValue().getQfactors());
 
-		String xml2 = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" + "<qexperiment>"
+		String xml2 = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" + "<qexperiment "
+				+ "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "
+				+ "xsi:schemaLocation=\"https://github.com/qbicsoftware/xml-manager-lib/blob/release/1.2.0/src/test/resources/life/qbic/xml/manager/qproperties.xsd\">"
 				+ "	<technology_type name = \"RNA-SEQ\"></technology_type>" + "<qfactors/>"
 				+ "    <qproperty entity_id=\"QABCD008AB\" label=\"tail_length\" value=\"0.3\" unit=\"m\"></qproperty>"
-				+ "    <qproperty entity_id=\"QABCD008AB\" label=\"name\" value=\"Krishna\"></qproperty>"
+				+ "    <qproperty entity_id=\"QABCD008AB\" label=\"name\" value=\"Grumpy Cat\"></qproperty>"
 				+ "</qexperiment>";
 
 		assertTrue(parser.validate(xml2));
@@ -379,10 +383,13 @@ public class StudyXMLParserTest {
 			assertEquals(q1.get(i), q2.get(i));
 		}
 		assertEquals(secondParse2.getValue().getQfactors(), firstParse2.getValue().getQfactors());
-		
-		String xml3 = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><qexperiment>    <technology_type name=\"Transcriptomics\"/>    <qfactors/></qexperiment>";
+
+		String xml3 = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><qexperiment "
+				+ "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "
+				+ "xsi:schemaLocation=\"https://github.com/qbicsoftware/xml-manager-lib/blob/release/1.2.0/src/test/resources/life/qbic/xml/manager/qproperties.xsd\">"
+				+ "<technology_type name=\"Transcriptomics\"/>    <qfactors/></qexperiment>";
 		assertTrue(parser.validate(xml3));
-		
+
 		assertFalse(parser.validate(parser.toString(empty)));
 	}
 
