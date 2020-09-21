@@ -23,12 +23,12 @@
         <repository>
             <id>nexus-snapshots</id>
             <name>QBiC Snapshots</name>
-            <url>https://qbic-repo.qbic.uni-tuebingen.de:8080/repository/maven-snapshots</url>
+            <url>http://qbic-repo.qbic.uni-tuebingen.de:8080/repository/maven-snapshots</url>
         </repository>
         <repository>
             <id>nexus-releases</id>
             <name>QBiC Releases</name>
-            <url>https://qbic-repo.qbic.uni-tuebingen.de:8080/repository/maven-releases</url>
+            <url>http://qbic-repo.qbic.uni-tuebingen.de:8080/repository/maven-releases</url>
         </repository>
     </repositories>
     
