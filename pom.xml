@@ -5,30 +5,29 @@
     <parent>
         <groupId>life.qbic</groupId>
         <artifactId>parent-pom</artifactId>
-        <version>1.5.1</version>
+        <version>3.0.0</version>
     </parent>
-
     <artifactId>xml-manager-lib</artifactId>
     <packaging>jar</packaging>
-    <version>1.5.0</version>
+    <version>1.6.0</version>
     <name>XML Property Parser Library</name>
     <url>http://maven.apache.org</url>
     <dependencies>
     		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-		</dependency>
+          <groupId>org.apache.commons</groupId>
+          <artifactId>commons-lang3</artifactId>
+		    </dependency>
     </dependencies>
     <repositories>
         <repository>
             <id>nexus-snapshots</id>
             <name>QBiC Snapshots</name>
-            <url>https://qbic-repo.am10.uni-tuebingen.de/repository/maven-snapshots</url>
+            <url>http://qbic-repo.qbic.uni-tuebingen.de:8081/repository/maven-snapshots</url>
         </repository>
         <repository>
             <id>nexus-releases</id>
             <name>QBiC Releases</name>
-            <url>https://qbic-repo.am10.uni-tuebingen.de/repository/maven-releases</url>
+            <url>http://qbic-repo.qbic.uni-tuebingen.de:8081/repository/maven-releases</url>
         </repository>
     </repositories>
     
