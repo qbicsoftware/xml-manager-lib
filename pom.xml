@@ -9,7 +9,7 @@
     </parent>
     <artifactId>xml-manager-lib</artifactId>
     <packaging>jar</packaging>
-    <version>1.6.0/version>
+    <version>1.6.0</version>
     <name>XML Property Parser Library</name>
     <url>http://maven.apache.org</url>
     <dependencies>
