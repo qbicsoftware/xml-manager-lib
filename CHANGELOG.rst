@@ -10,7 +10,10 @@ This project adheres to `Semantic Versioning <https://semver.org/>`_.
 
 **Added**
 
+* Include bnd file for manifest generation
+* Add profiles to Pom to support OSGI and non-OSGI packaging
 * Use parent pom 3.0.0
+
 
 **Fixed**
 
