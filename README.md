@@ -27,3 +27,34 @@ mvn clean package
 ```
 
 The JAR file will be created in the ``/target`` folder
+
+## Add this library as a dependency
+
+This library is not hosted on maven central. To use it, you have to include our artifact repository to your pom.
+
+```xml
+<repositories>
+    <repository>
+        <releases>
+            <enabled>true</enabled>
+            <updatePolicy>always</updatePolicy>
+            <checksumPolicy>fail</checksumPolicy>
+        </releases>
+        <snapshots>
+            <enabled>false</enabled>
+        </snapshots>
+        <id>nexus-releases</id>
+        <name>QBiC Releases</name>
+        <url>https://qbic-repo.qbic.uni-tuebingen.de/repository/maven-releases</url>
+    </repository>
+</repositories>
+```
+
+Then include this library as an artifact.
+```xml
+<dependency>
+    <groupId>life.qbic</groupId>
+    <artifactId>xml-manager-lib</artifactId>
+    <version>1.7.0-SNAPSHOT</version>
+</dependency>
+```
