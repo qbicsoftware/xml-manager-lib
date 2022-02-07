@@ -16,9 +16,6 @@ xml-manager-lib
 [![license](https://img.shields.io/github/license/qbicsoftware/xml-manager-lib)](https://github.com/qbicsoftware/xml-manager-lib/blob/main/LICENSE)
 ![language](https://img.shields.io/badge/language-java-blue.svg)
 
-* Free software: MIT
-* Documentation: https://xml-manager-lib.readthedocs.io.
-
 </div>
 
 ## How to compile
