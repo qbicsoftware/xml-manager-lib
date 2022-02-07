@@ -19,6 +19,8 @@ xml-manager-lib
 * Free software: MIT
 * Documentation: https://xml-manager-lib.readthedocs.io.
 
+</div>
+
 ## How to compile
 
 Compile the project and build an executable java archive:
