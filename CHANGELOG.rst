@@ -10,8 +10,6 @@ This project adheres to `Semantic Versioning <https://semver.org/>`_.
 
 **Added**
 
-* Update github workflows
-* Update License
 * Remove reference to parent pom
 
 **Fixed**
