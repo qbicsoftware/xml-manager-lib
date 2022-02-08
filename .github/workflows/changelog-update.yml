@@ -13,4 +13,3 @@ jobs:
         with:
           changeLogPath: 'CHANGELOG.rst'
           skipLabels: 'Skip-Changelog'
-          
