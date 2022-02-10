@@ -55,6 +55,6 @@ Then include this library as an artifact.
 <dependency>
     <groupId>life.qbic</groupId>
     <artifactId>xml-manager-lib</artifactId>
-    <version>1.7.0-SNAPSHOT</version>
+    <version>[version]</version>
 </dependency>
 ```
