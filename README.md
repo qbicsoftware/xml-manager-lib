@@ -18,9 +18,9 @@ xml-manager-lib
 
 </div>
 
-## How to compile
+## How to run
 
-Compile the project and build an executable java archive:
+Compile the project with Maven and Java 8 and build an executable java archive:
 
 ```
 mvn clean package
@@ -28,7 +28,7 @@ mvn clean package
 
 The JAR file will be created in the ``/target`` folder
 
-## Add this library as a dependency
+## How to use
 
 This library is not hosted on maven central. To use it, you have to include our artifact repository to your pom.
 
