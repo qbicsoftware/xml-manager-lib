@@ -1,12 +1,6 @@
-xml-manager-lib
------------------------------------
-# <p align=center>XML Manager Library</p>
-
-<p align="center"><i>Library for reading and writing of specific openBIS xml properties </i></p>
-
 <div align="center">
-
-
+# XML Manager Library
+<i>Library for reading and writing of specific openBIS xml properties </i>
 
 [![Build Maven Package](https://github.com/qbicsoftware/xml-manager-lib/actions/workflows/build_package.yml/badge.svg)](https://github.com/qbicsoftware/xml-manager-lib/actions/workflows/build_package.yml)
 [![Run Maven Tests](https://github.com/qbicsoftware/xml-manager-lib/actions/workflows/run_tests.yml/badge.svg)](https://github.com/qbicsoftware/xml-manager-lib/actions/workflows/run_tests.yml)
