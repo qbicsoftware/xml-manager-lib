@@ -20,6 +20,8 @@ Compile the project with Maven and Java 8 and build an executable java archive:
 mvn clean package
 ```
 
+Java 8 MUST be used, as the package javax.xml.bin is deprecated/removed in future versions.
+
 The JAR file will be created in the ``/target`` folder
 
 ## How to use
